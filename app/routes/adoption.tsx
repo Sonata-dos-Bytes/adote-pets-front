@@ -1,5 +1,5 @@
+import { AdoptionList } from "../pages/adoption-listing/adoption-list";
 import type { Route } from "./+types/home";
-import { Welcome } from "../pages/welcome/welcome";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -8,6 +8,6 @@ export function meta({}: Route.MetaArgs) {
   ];
 }
 
-export default function HomePage() {
-  return <Welcome />;
+export default function AdoptionPage() {
+  return <AdoptionList />;
 }
