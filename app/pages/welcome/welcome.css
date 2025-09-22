@@ -1,0 +1,173 @@
+/* ============================= */
+/* Layout Principal              */
+/* ============================= */
+main {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  height: 100vh;
+  padding: 0 5%;
+  gap: 2rem;
+}
+
+main section {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+/* ============================= */
+/* Texto e Conteúdo Esquerdo     */
+/* ============================= */
+main .welcome-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1.5rem;
+  max-width: 500px;
+}
+
+main .welcome-section h1 {
+  font-size: clamp(2rem, 5vw, 3rem);
+  margin-bottom: 0.5rem;
+  color: #D77445;
+  font-weight: bold;
+  line-height: 1.2;
+}
+
+main .welcome-section h1 span {
+  color: #380706;
+}
+
+main .welcome-section p {
+  font-size: clamp(1rem, 2.5vw, 1.2rem);
+  margin-bottom: 1.5rem;
+  color: #333;
+  line-height: 1.6;
+  font-weight: 500;
+}
+
+/* ============================= */
+/* Botões                        */
+/* ============================= */
+main .welcome-section .button-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+main .welcome-section .button-group div {
+  flex: 1;
+  min-width: 140px;
+  display: flex;
+}
+
+/* ============================= */
+/* Figura Direita                */
+/* ============================= */
+.welcome-figure {
+  position: relative;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 600px; 
+  width: 100%;
+}
+
+.welcome-figure img {
+  /* max-width: 100%; */
+  height: auto;
+  display: block;
+}
+
+.background-image {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-65%, -60%);
+  z-index: 1;
+  width: 100%;
+  max-width: 600px;
+}
+
+.welcome-figure img:not(.background-image) {
+  position: relative;
+  z-index: 2;
+  max-width: 750px;
+}
+
+/* ============================= */
+/* Responsividade                */
+/* ============================= */
+@media (max-width: 1400px) {
+  main {
+    flex-direction: column;
+    height: auto;
+    padding: 2rem 1rem;
+    text-align: center;
+    gap: 2rem;
+  }
+
+  .welcome-section {
+    align-items: center;
+  }
+
+  .button-group {
+    justify-content: center;
+  }
+
+  .welcome-figure {
+    max-width: 100%;
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+  }
+
+  /* No mobile, o background deixa de ser absolute */
+  .background-image {
+    position: relative;
+    transform: none;
+    max-width: 250px;
+    transform: translate(-140%, -80%);
+    z-index: -1;
+  }
+
+  .welcome-figure img:not(.background-image) {
+    max-width: 220px;
+    position: relative;
+    z-index: 2;
+  }
+}
+
+@media (max-width: 480px) {
+  main .welcome-section h1 {
+    font-size: 1.8rem;
+  }
+
+  main .welcome-section p {
+    font-size: 1rem;
+  }
+
+  .button-group {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .button-group div {
+    width: 100%;
+  }
+
+  .background-image {
+    max-width: 200px;
+    margin-bottom: -60px;
+  }
+
+  .welcome-figure img:not(.background-image) {
+    max-width: 180px;
+  }
+}
