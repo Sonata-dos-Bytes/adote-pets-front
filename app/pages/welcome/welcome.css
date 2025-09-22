@@ -1,0 +1,274 @@
+/* ============================= */
+/* Layout Principal              */
+/* ============================= */
+main {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 100vh;
+  padding: 2rem 5%;
+  gap: 4rem;
+  overflow-x: hidden;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+main section {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+/* ============================= */
+/* Texto e Conteúdo Esquerdo     */
+/* ============================= */
+main .welcome-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1.8rem;
+  max-width: 520px;
+  padding-right: 1rem;
+}
+
+main .welcome-section h1 {
+  font-size: clamp(2rem, 5vw, 3rem);
+  margin-bottom: 0.5rem;
+  color: #D77445;
+  font-weight: bold;
+  line-height: 1.2;
+}
+
+main .welcome-section h1 span {
+  color: #380706;
+}
+
+main .welcome-section p {
+  font-size: clamp(1rem, 2.5vw, 1.2rem);
+  margin-bottom: 1.5rem;
+  color: #333;
+  line-height: 1.6;
+  font-weight: 500;
+}
+
+/* ============================= */
+/* Botões                        */
+/* ============================= */
+main .welcome-section .button-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+main .welcome-section .button-group div {
+  flex: 1;
+  min-width: 140px;
+  display: flex;
+}
+
+/* ============================= */
+/* Figura Direita                */
+/* ============================= */
+.welcome-figure {
+  position: relative;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 550px; 
+  width: 100%;
+  height: auto;
+}
+
+.welcome-figure img {
+  height: auto;
+  display: block;
+}
+
+.background-image {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -60%);
+  z-index: 1;
+  width: 100%;
+  max-width: 500px;
+  opacity: 0.8;
+}
+
+.welcome-figure img:not(.background-image) {
+  position: relative;
+  z-index: 2;
+  max-width: 400px;
+  width: 90%;
+}
+
+/* ============================= */
+/* Responsividade                */
+/* ============================= */
+@media (max-width: 1400px) {
+  main {
+    flex-direction: column;
+    min-height: 100vh;
+    padding: 3rem 2rem;
+    text-align: center;
+    gap: 2.5rem;
+    justify-content: center;
+    max-width: none;
+  }
+
+  .welcome-section {
+    align-items: center;
+    max-width: 600px;
+    margin-bottom: 1.5rem;
+    padding-right: 0;
+    gap: 1.5rem;
+  }
+
+  .button-group {
+    justify-content: center;
+    max-width: 400px;
+    margin-top: 0.5rem;
+  }
+
+  .welcome-figure {
+    max-width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    margin-top: 1rem;
+  }
+
+  .background-image {
+    position: absolute;
+    transform: translate(-50%, -68%);
+    width: 95%;
+    max-width: 420px;
+    z-index: 1;
+    opacity: 0.85;
+  }
+
+  .welcome-figure img:not(.background-image) {
+    max-width: 340px;
+    position: relative;
+    z-index: 2;
+    width: 85%;
+  }
+}
+
+@media (max-width: 768px) and (min-width: 481px) {
+  main {
+    padding: 2.5rem 1.5rem;
+    gap: 2rem;
+  }
+
+  .welcome-section {
+    max-width: 500px;
+    gap: 1.4rem;
+  }
+
+  .welcome-figure {
+    margin-top: 1rem;
+  }
+
+  .background-image {
+    max-width: 350px;
+    transform: translate(-50%, -65%);
+    opacity: 0.85;
+    width: 90%;
+  }
+
+  .welcome-figure img:not(.background-image) {
+    max-width: 290px;
+    width: 80%;
+  }
+
+  .button-group {
+    max-width: 350px;
+    gap: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  main {
+    padding: 2rem 1rem;
+    gap: 1.5rem;
+  }
+
+  main .welcome-section {
+    margin-bottom: 0.5rem;
+    gap: 1.2rem;
+  }
+
+  main .welcome-section h1 {
+    font-size: 1.8rem;
+    margin-bottom: 0.8rem;
+    line-height: 1.1;
+  }
+
+  main .welcome-section p {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+  }
+
+  .button-group {
+    flex-direction: column;
+    width: 100%;
+    gap: 0.8rem;
+    margin-top: 0.5rem;
+  }
+
+  .button-group div {
+    width: 100%;
+    min-width: auto;
+  }
+
+  .welcome-figure {
+    margin-top: 1rem;
+  }
+
+  .background-image {
+    max-width: 260px;
+    transform: translate(-50%, -70%);
+    opacity: 0.8;
+    width: 85%;
+  }
+
+  .welcome-figure img:not(.background-image) {
+    max-width: 220px;
+    width: 75%;
+  }
+}
+
+/* ============================= */
+/* Mobile Muito Pequeno          */
+/* ============================= */
+@media (max-width: 360px) {
+  main {
+    padding: 1.5rem 0.8rem;
+    gap: 1.2rem;
+  }
+
+  main .welcome-section h1 {
+    font-size: 1.6rem;
+  }
+
+  main .welcome-section p {
+    font-size: 0.95rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .background-image {
+    max-width: 200px;
+    transform: translate(-50%, -65%);
+  }
+
+  .welcome-figure img:not(.background-image) {
+    max-width: 180px;
+    width: 70%;
+  }
+}
