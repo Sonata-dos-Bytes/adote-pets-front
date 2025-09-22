@@ -1,0 +1,26 @@
+.input-wrapper {
+  position: relative;
+  flex: 1;
+}
+
+.input-wrapper .input-icon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #d65a1d;
+  font-size: 18px;
+  pointer-events: none;
+}
+
+.input-wrapper input {
+  width: 100%;
+  padding: 0.5rem 0.75rem 0.5rem 2.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  outline: none;
+}
+
+.input-wrapper input:focus {
+  border-color: #d65a1d;
+}
