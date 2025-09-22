@@ -1,0 +1,17 @@
+.custom-button {
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  flex: 1;
+  transition: all 0.3s ease-in-out;
+}
+
+.custom-button:hover {
+  background-color: var(--text-color);
+  color: var(--bg-color);
+  border: 1px solid var(--bg-color);
+}
