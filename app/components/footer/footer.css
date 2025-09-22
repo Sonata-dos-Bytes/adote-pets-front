@@ -64,7 +64,7 @@
 .newsletter-form {
   display: flex;
   gap: 0.5rem;
-  flex-wrap: wrap;
+  flex-direction: column;
 }
 
 /* BLOCO INFERIOR */
