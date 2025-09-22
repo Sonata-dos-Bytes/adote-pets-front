@@ -1,0 +1,77 @@
+/* Estilo base */
+.box_white {
+  background-color: white;
+  width: 100%;
+  height: 88px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content:space-between;
+  position: relative;
+  padding: 0px 20px;
+}
+
+.box_orange {
+  background-color: #e18559;
+  width: 100%;
+  height: 32px;
+}
+
+.logo {
+  width: 150px;
+  height: 50px;
+}
+
+.links {
+  display: flex;
+  flex-direction: row;
+  gap: 32px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.user {
+  width: 140px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Botão hambúrguer */
+.hamburger {
+  display: none;
+  font-size: 28px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .links {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .hamburger {
+    display: block; /* aparece só no mobile */
+  }
+
+  .nav-links {
+    display: none; /* esconde por padrão */
+    position: absolute;
+    top: 88px;
+    left: 0;
+    width: 100%;
+    background: white;
+    padding: 20px 0;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .nav-links.open {
+    display: flex; /* aparece quando menuOpen = true */
+    justify-content: center;
+  }
+}
