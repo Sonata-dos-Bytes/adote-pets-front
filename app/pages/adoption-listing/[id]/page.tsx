@@ -2,6 +2,8 @@ import { useParams } from "react-router"
 import "./page.css"
 import PetInfo from "~/components/pet-info/pet-info"
 import LocationInfo from "~/components/location-info/location-info"
+import HistoryCard from "~/components/history-card/history-card"
+import CardWithButton from "~/components/card-with-button/card-with-button"
 import type { IDog } from "~/types/IDog"
 
 const dogsData: IDog[] = [
@@ -13,7 +15,7 @@ const dogsData: IDog[] = [
     breed: "Retriever",
     age: "14 meses",
     description:
-      "Lola é um cão fêmea amigável, brincalhona e inteligente. Adotá...",
+      "Temos a Magie desde que ela conseguiu deixar a mãe ainda filhote, com 8 semanas de idade. Atualmente, Magie mora com dois filhos de 7 e 13 anos e recebe muitos visitantes em casa, incluindo crianças. Ela é ótima com crianças. Há muitos gatos, pássaros, etc., por perto e no jardim na maioria dos dias, pois eles não a incomodam.",
     image:
       "https://images.unsplash.com/photo-1552053831-71594a27632d?w=400&h=300&fit=crop&crop=faces",
   },
@@ -37,6 +39,8 @@ export default function AdoptionSpecific() {
 
       <PetInfo pet={dog} />
       <LocationInfo state={dog.location} />
+      <HistoryCard title="História de Magie" story={dog.description} />
+      <CardWithButton />
     </main>
   )
 }
