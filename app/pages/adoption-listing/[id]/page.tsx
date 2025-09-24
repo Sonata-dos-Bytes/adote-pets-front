@@ -5,6 +5,8 @@ import LocationInfo from "~/components/location-info/location-info"
 import HistoryCard from "~/components/history-card/history-card"
 import CardWithButton from "~/components/card-with-button/card-with-button"
 import type { IDog } from "~/types/IDog"
+import PetAttributeCard from "~/components/pet-attribute-card/pet-attribute-card"
+import { User } from "lucide-react"
 
 const dogsData: IDog[] = [
   {
@@ -41,6 +43,11 @@ export default function AdoptionSpecific() {
       <LocationInfo state={dog.location} />
       <HistoryCard title="História de Magie" story={dog.description} />
       <CardWithButton />
+      <PetAttributeCard
+        title="Gênero"
+        value={dog.gender}
+        icon={<User size={48} />}
+      />
     </main>
   )
 }
