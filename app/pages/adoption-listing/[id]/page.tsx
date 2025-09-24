@@ -7,6 +7,15 @@ import CardWithButton from "~/components/card-with-button/card-with-button"
 import type { IDog } from "~/types/IDog"
 import PetAttributeCard from "~/components/pet-attribute-card/pet-attribute-card"
 import { User } from "lucide-react"
+import Gallery from "~/components/gallery/gallery"
+
+const petImages = [
+  { src: 'https://images.unsplash.com/photo-1552053831-71594a27632d?w=400&h=300&fit=crop&crop=faces', alt: 'Descrição da imagem 1' },
+  { src: 'https://images.unsplash.com/photo-1551717743-49959800b1f6?w=400&h=300&fit=crop&crop=faces', alt: 'Descrição da imagem 2' },
+  { src: 'https://images.unsplash.com/photo-1583337130417-3346a1be7dee?w=400&h=300&fit=crop&crop=faces', alt: 'Descrição da imagem 3' },
+  { src: 'https://images.unsplash.com/photo-1589941013453-ec89f33b5e95?w=400&h=300&fit=crop&crop=faces', alt: 'Descrição da imagem 4' },
+];
+
 
 const dogsData: IDog[] = [
   {
@@ -48,6 +57,7 @@ export default function AdoptionSpecific() {
         value={dog.gender}
         icon={<User size={48} />}
       />
+      <Gallery images={petImages} />
     </main>
   )
 }
