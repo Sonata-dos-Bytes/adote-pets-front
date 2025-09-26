@@ -1,8 +1,8 @@
-import DogProfileCard from '~/components/dog-profile-card/dog-profile-card';
-import './adoption-list.css';
 import PetFilters from '~/components/filters/filters';
+import DogProfileCard from '~/components/pet-profile-card/pet-profile-card';
+import './adoption-list.css';
 
-const dogsData = [
+const petsData = [
   {
     id: 1,
     name: 'Lola',
@@ -87,9 +87,9 @@ export function AdoptionList() {
 
         <div className='w-full'>
           <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'>
-            {dogsData.map((dog) => (
-              <div key={dog.id} className='flex'>
-                <DogProfileCard dogData={dog} />
+            {petsData.map((pet) => (
+              <div key={pet.id} className='flex'>
+                <DogProfileCard petData={pet} />
               </div>
             ))}
           </div>

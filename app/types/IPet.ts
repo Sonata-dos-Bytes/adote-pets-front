@@ -1,4 +1,4 @@
-interface IDog {
+interface IPet {
   id: number;
   name: string;
   location: string;
@@ -10,5 +10,5 @@ interface IDog {
 }
 
 export type {
-  IDog,
+  IPet,
 }
