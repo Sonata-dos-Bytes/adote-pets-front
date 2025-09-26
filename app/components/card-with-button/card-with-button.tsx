@@ -11,7 +11,7 @@ export default function CardWithButton({ onClick }: CardWithButtonProps) {
 
       <button
         onClick={onClick}
-        className="bg-[#D77445] text-white text-sm font-semibold py-2 px-6 rounded-lg hover:bg-orange-600 transition-colors"
+        className="bg-[#D77445] text-white text-sm font-semibold py-2 px-6 rounded-lg hover:bg-orange-400 transition-colors"
       >
         Entre em Contato
       </button>

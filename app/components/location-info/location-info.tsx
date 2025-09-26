@@ -14,7 +14,7 @@ export default function LocationInfo({
       <img
         src="https://flagcdn.com/w40/br.png"
         alt="Bandeira do Brasil"
-        className="w-12 h-8 rounded shadow"
+        className="w-16 h-12 rounded shadow"
       />
 
       <div className="flex flex-col">
