@@ -13,8 +13,8 @@ const Gallery: React.FC<GalleryProps> = ({ images }) => {
   const [selectedImage, setSelectedImage] = useState<Image>(images[0]);
 
   return (
-    <div className="flex flex-col items-center p-4">
-      <div className="w-[808px] h-[414px] overflow-hidden rounded-2xl shadow-lg mb-4">
+    <div className="flex flex-col items-center py-4">
+      <div className="w-full h-[504px] overflow-hidden rounded-2xl shadow-lg mb-4">
         <img src={selectedImage.src} alt={selectedImage.alt} className="w-full h-full object-cover" />
       </div>
 
@@ -23,7 +23,7 @@ const Gallery: React.FC<GalleryProps> = ({ images }) => {
           <div
             key={index}
             className={`
-              w-[184px] h-[122px]
+              w-[207px] h-[126px]
               cursor-pointer
               rounded-2xl
               overflow-hidden
