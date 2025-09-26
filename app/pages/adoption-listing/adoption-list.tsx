@@ -79,18 +79,23 @@ const petsData = [
 export function AdoptionList() {
   return (
     <div className='container mx-auto px-4 py-8'>
-      <div className='flex flex-col lg:flex-row gap-8 w-full'>
-        <div className='w-full lg:w-2/5 mb-8 lg:mb-0'>
-          <PetFilters />
-        </div>
+      <div className='flex flex-col gap-10'>
+        <h1 className='text-4xl font-bold mb-4'>
+          Animais Disponíveis para Adoção
+        </h1>
+        <div className='flex flex-col lg:flex-row gap-8 w-full'>
+          <div className='w-full lg:w-2/5 mb-8 lg:mb-0'>
+            <PetFilters />
+          </div>
 
-        <div className='w-full'>
-          <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'>
-            {petsData.map((pet) => (
-              <div key={pet.id} className='flex'>
-                <DogProfileCard petData={pet} />
-              </div>
-            ))}
+          <div className='w-full'>
+            <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'>
+              {petsData.map((pet) => (
+                <div key={pet.id} className='flex'>
+                  <DogProfileCard petData={pet} />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
