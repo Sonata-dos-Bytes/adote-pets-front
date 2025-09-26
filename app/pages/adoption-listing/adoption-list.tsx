@@ -1,6 +1,5 @@
 import PetFilters from '~/components/filters/filters';
 import DogProfileCard from '~/components/pet-profile-card/pet-profile-card';
-import './adoption-list.css';
 
 const petsData = [
   {

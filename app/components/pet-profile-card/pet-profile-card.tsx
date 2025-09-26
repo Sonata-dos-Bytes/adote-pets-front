@@ -55,7 +55,7 @@ const PetProfileCard = ({ petData }: { petData: IPet }) => {
       </Card.Content>
 
       <Card.Footer>
-        <Button onClick={() => navigate(`/adoption/${pet.id}`)}>
+        <Button onClick={() => navigate(`/adoption/1`)}>
           Mais informações
         </Button>
       </Card.Footer>
