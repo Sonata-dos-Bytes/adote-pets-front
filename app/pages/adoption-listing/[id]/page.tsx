@@ -6,7 +6,7 @@ import HistoryCard from "~/components/history-card/history-card"
 import CardWithButton from "~/components/card-with-button/card-with-button"
 import type { IDog } from "~/types/IDog"
 import PetAttributeCard from "~/components/pet-attribute-card/pet-attribute-card"
-import { User } from "lucide-react"
+import { Venus, Clock, PawPrint } from "lucide-react"
 import Gallery from "~/components/gallery/gallery"
 
 const petImages = [
@@ -46,18 +46,39 @@ export default function AdoptionSpecific() {
 
   return (
     <main className="main-content">
-      <h1 className="text-2xl font-bold">Adoção Específica {dog.id}</h1>
+      <h1 className="text-2xl font-bold">Olá, humano! {dog.id}</h1>
 
       <PetInfo pet={dog} />
       <LocationInfo state={dog.location} />
-      <HistoryCard title="História de Magie" story={dog.description} />
-      <CardWithButton />
-      <PetAttributeCard
-        title="Gênero"
-        value={dog.gender}
-        icon={<User size={48} />}
-      />
-      <Gallery images={petImages} />
+
+      <div className="w-full flex">
+        <div className="w-3/5">
+          <Gallery images={petImages} />
+        </div>
+
+        <div className="w-2/5 flex flex-col items-center gap-6">
+          <HistoryCard title="História de Magie" story={dog.description} />
+          <CardWithButton /> 
+
+          <div className="flex justify-center items-center gap-6 mt-6 mb-10">
+            <PetAttributeCard
+              title="Gênero"
+              value={dog.gender}
+              icon={<Venus size={22} color="#D77445" />}
+            />
+            <PetAttributeCard
+              title="Raça"
+              value={dog.breed}
+              icon={<PawPrint size={22} color="#D77445" />}
+            />
+            <PetAttributeCard
+              title="Idade"
+              value={dog.age}
+              icon={<Clock size={22} color="#D77445" />}
+            />
+          </div>
+        </div>
+      </div>
     </main>
   )
 }
