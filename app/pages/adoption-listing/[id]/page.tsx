@@ -45,22 +45,22 @@ export default function AdoptionSpecific() {
   }
 
   return (
-    <main className="main-content">
+    <main className="w-[1350px] mx-auto main-content">
       <h1 className="text-2xl font-bold">Olá, humano! {dog.id}</h1>
 
       <PetInfo pet={dog} />
       <LocationInfo state={dog.location} />
 
-      <div className="w-full flex">
-        <div className="w-3/5">
+      <div className="flex">
+        <div className="w-2/3">
           <Gallery images={petImages} />
         </div>
 
-        <div className="w-2/5 flex flex-col items-center gap-6">
+        <div className="w-1/3 flex flex-col items-center gap-6 p-4">
           <HistoryCard title="História de Magie" story={dog.description} />
           <CardWithButton /> 
 
-          <div className="flex justify-center items-center gap-6 mt-6 mb-10">
+          <div className="flex w-full justify-between items-center mt-6 mb-10">
             <PetAttributeCard
               title="Gênero"
               value={dog.gender}
