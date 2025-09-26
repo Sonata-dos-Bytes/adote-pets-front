@@ -14,21 +14,21 @@ const Gallery: React.FC<GalleryProps> = ({ images }) => {
 
   return (
     <div className="flex flex-col items-center py-4">
-      <div className="w-full h-[504px] overflow-hidden rounded-2xl shadow-lg mb-4">
+      <div className="w-full h-[250px] md:h-[504px] overflow-hidden rounded-2xl shadow-lg mb-4">
         <img src={selectedImage.src} alt={selectedImage.alt} className="w-full h-full object-cover" />
       </div>
 
-      <div className="flex justify-center space-x-5">
+      <div className="flex justify-center space-x-2 md:space-x-5 flex-wrap">
         {images.map((image: Image, index: number) => (
           <div
             key={index}
             className={`
-              w-[207px] h-[126px]
+              w-[76px] h-[60px] md:w-[207px] md:h-[126px] 
               cursor-pointer
-              rounded-2xl
+              rounded-lg md:rounded-2xl 
               overflow-hidden
               transition-all duration-300 ease-in-out
-              ${selectedImage.src === image.src ? 'border-4 border-[#D77445] transform scale-110' : 'border-2 border-transparent'}
+              ${selectedImage.src === image.src ? 'border-2 md:border-4 border-[#D77445] transform scale-105 md:scale-110' : 'border-2 border-transparent'}
             `}
             onClick={() => setSelectedImage(image)}
           >
