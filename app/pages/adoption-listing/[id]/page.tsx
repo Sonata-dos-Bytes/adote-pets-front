@@ -16,7 +16,6 @@ const petImages = [
   { src: 'https://images.unsplash.com/photo-1589941013453-ec89f33b5e95?w=400&h=300&fit=crop&crop=faces', alt: 'Descrição da imagem 4' },
 ];
 
-
 const dogsData: IDog[] = [
   {
     id: 1,
@@ -46,7 +45,7 @@ export default function AdoptionSpecific() {
 
   return (
     <main className="max-w-full md:max-w-[1350px] mx-auto main-content p-4 md:p-0">
-      <h1 className="text-2xl font-bold">Olá, humano! {dog.id}</h1>
+      <h1 className="text-2xl font-bold">Olá, humano!</h1>
 
       <PetInfo pet={dog} />
       <LocationInfo state={dog.location} />
