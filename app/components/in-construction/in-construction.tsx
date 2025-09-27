@@ -2,7 +2,7 @@ export const InConstruction = () => {
   return (
     <div className='flex flex-1 f-full flex-col items-center justify-center my-10'>
       <img
-        src='/public/assets/images/dog.svg'
+        src='/assets/images/dog.svg'
         alt='Cão em construção'
         className='w-96'
       />
