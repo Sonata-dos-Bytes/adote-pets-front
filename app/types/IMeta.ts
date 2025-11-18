@@ -1,4 +1,4 @@
-export interface MetaResponse {
+export interface IMeta {
     total?: number;
     page?: number;
     perPage?: number;
