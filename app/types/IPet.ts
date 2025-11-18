@@ -1,12 +1,22 @@
+import type { IFile } from "./IFile";
+
 interface IPet {
-  id: number;
+  externalId: string;
+  createdAt: string;
+  updatedAt: string;
   name: string;
-  location: string;
-  gender: string;
+  lore: string;
+  birthDay: string;
+  species: string;
   breed: string;
-  age: string;
-  description: string;
-  image: string;
+  gender: string;
+  color: string;
+  city: string;
+  state: string;
+  uf: string;
+  isCastrated: boolean;
+  isAdote: boolean;
+  files: IFile[];
 }
 
 export type {
