@@ -12,13 +12,12 @@ export function AdoptionList() {
   const [error, setError] = useState<string | null>(null);
   const [pets, setPets] = useState<IPet[]>([]);
   const [meta, setMeta] = useState<IMeta>({});
+  const [query, setQuery] = useState<IQuery>({ page: 1, perPage: 1 });
 
   useEffect(() => {
     async function load() {
       setLoading(true);
       setError(null);
-
-      const query: IQuery = { page: 1, perPage: 1 };
 
       try {
         const response: IApiResponse<{
