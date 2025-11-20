@@ -12,7 +12,7 @@ export function AdoptionList() {
   const [error, setError] = useState<string | null>(null);
   const [pets, setPets] = useState<IPet[]>([]);
   const [meta, setMeta] = useState<IMeta>({});
-  const [query, setQuery] = useState<IQuery>({ page: 1, perPage: 1 });
+  const [query, setQuery] = useState<IQuery>({ page: 1, perPage: 9 });
 
   useEffect(() => {
     async function load() {
@@ -39,7 +39,7 @@ export function AdoptionList() {
     }
 
     load();
-  }, []);
+  }, [query]);
 
   return (
     <div className='container mx-auto px-4 py-8'>
@@ -48,8 +48,12 @@ export function AdoptionList() {
           Animais Disponíveis para Adoção
         </h1>
         <div className='flex flex-col lg:flex-row gap-8 w-full'>
-          <div className='w-full lg:w-2/5 mb-8 lg:mb-0'>
-            <PetFilters />
+            <div className='w-full lg:w-2/5 mb-8 lg:mb-0'>
+            <PetFilters
+              onApply={(q) =>
+                setQuery((prev) => ({ ...(prev || {}), ...(q as any), page: 1 }))
+              }
+            />
           </div>
 
           <div className='w-full'>

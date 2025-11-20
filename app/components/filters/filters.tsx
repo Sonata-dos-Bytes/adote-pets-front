@@ -1,137 +1,149 @@
 import { ChevronDown } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Button from '../ui/button/button';
-interface FilterOption {
-  value: string;
-  label: string;
-}
+import Field from '../ui/field/field';
+import { Select } from '../ui/select/select';
 
-interface FilterSelectProps {
-  options: FilterOption[];
-  value: string;
-  onChange: (value: string) => void;
-  placeholder?: string;
-}
-
-const FilterSelect = ({
-  options,
-  value,
-  onChange,
-  placeholder = 'Selecionar...',
-}: FilterSelectProps) => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const selectedLabel: string | undefined = value
-    ? options.find((option: FilterOption) => option.value === value)?.label
-    : undefined;
-
-  return (
-    <div className='relative font-sans'>
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className='w-full border border-gray-300 rounded-lg px-4 py-3 text-left bg-white hover:border-gray-400 focus:ring-2 focus:ring-primary focus:border-primary flex items-center justify-between font-sans'
-      >
-        <span
-          className={
-            selectedLabel
-              ? 'text-gray-900 font-sans'
-              : 'text-gray-500 font-bold font-sans'
-          }
-        >
-          {selectedLabel || placeholder}
-        </span>
-        <ChevronDown
-          className={`h-5 w-5 text-gray-400 transition-transform ${isOpen ? 'rotate-180' : ''}`}
-        />
-      </button>
-
-      {isOpen && (
-        <div className='absolute top-full left-0 right-0 mt-1 bg-white border border-gray-300 rounded-lg shadow-lg z-10'>
-          <div className='py-1'>
-            <button
-              onClick={() => {
-                onChange('');
-                setIsOpen(false);
-              }}
-              className='w-full px-4 py-2 text-left hover:bg-gray-50 text-gray-500 font-bold font-sans'
-            >
-              {placeholder}
-            </button>
-            {options.map((option) => (
-              <button
-                key={option.value}
-                onClick={() => {
-                  onChange(option.value);
-                  setIsOpen(false);
-                }}
-                className={`w-full px-4 py-2 text-left hover:bg-gray-50 font-sans ${
-                  value === option.value
-                    ? 'bg-orange-50 text-orange-700'
-                    : 'text-gray-900'
-                }`}
-              >
-                {option.label}
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
-    </div>
-  );
+type FiltersState = {
+  species: string;
+  startAge: string;
+  endAge: string;
+  gender: string;
+  city: string;
+  state: string;
+  uf: string;
+  breed: string;
+  startDate: string;
+  endDate: string;
+  isCastrated: string;
 };
 
-const AdoptionFilters = () => {
-  const [filters, setFilters] = useState({
-    animal: '',
-    idade: '',
-    genero: '',
-    cidade: '',
+interface AdoptionFiltersProps {
+  onApply?: (
+    query: Partial<Record<string, string | number | boolean | undefined>>,
+  ) => void;
+}
+
+const AdoptionFilters = ({ onApply }: AdoptionFiltersProps) => {
+  const [filters, setFilters] = useState<FiltersState>({
+    species: '',
+    startAge: '',
+    endAge: '',
+    gender: '',
+    city: '',
+    state: '',
+    uf: '',
+    breed: '',
+    startDate: '',
+    endDate: '',
+    isCastrated: '',
   });
 
+  const [states, setStates] = useState<
+    Array<{ id: number; nome: string; sigla: string }>
+  >([]);
+  const [cities, setCities] = useState<string[]>([]);
+  const [loadingStates, setLoadingStates] = useState(false);
+  const [loadingCities, setLoadingCities] = useState(false);
+
   const animais = [
-    { value: 'cachorro', label: 'Cachorro' },
-    { value: 'gato', label: 'Gato' },
+    { value: 'dog', label: 'Cachorro' },
+    { value: 'cat', label: 'Gato' },
     { value: 'coelho', label: 'Coelho' },
     { value: 'passaro', label: 'Pássaro' },
   ];
-
   const idades = [
     { value: 'filhote', label: 'Filhote (0-1 ano)' },
     { value: 'jovem', label: 'Jovem (1-3 anos)' },
     { value: 'adulto', label: 'Adulto (3-7 anos)' },
     { value: 'senior', label: 'Senior (7+ anos)' },
   ];
-
-  const generos = [
-    { value: 'macho', label: 'Macho' },
-    { value: 'femea', label: 'Fêmea' },
+  const genders = [
+    { value: 'male', label: 'Macho' },
+    { value: 'female', label: 'Fêmea' },
   ];
+  const cidades = cities.map((c) => ({ value: c, label: c }));
 
-  const cidades = [
-    { value: 'balsas', label: 'Balsas, Maranhão' },
-    { value: 'mangabeiras', label: 'S. R. Mangabeiras, Maranhão' },
-  ];
-
-  const updateFilter = (key, value) => {
+  const updateFilter = (key: keyof FiltersState, value: string) => {
     setFilters((prev) => ({ ...prev, [key]: value }));
   };
 
   const resetFilters = () => {
     setFilters({
-      animal: '',
-      idade: '',
-      genero: '',
-      cidade: '',
+      species: '',
+      startAge: '',
+      endAge: '',
+      gender: '',
+      city: '',
+      state: '',
+      uf: '',
+      breed: '',
+      startDate: '',
+      endDate: '',
+      isCastrated: '',
     });
   };
 
   const applyFilters = () => {
-    console.log('Filtros aplicados:', filters);
+    const q: any = {};
+    if (filters.species) q.species = filters.species;
+    if (filters.gender) q.gender = filters.gender;
+    if (filters.breed) q.breed = filters.breed;
+    if (filters.city) q.city = filters.city;
+    if (filters.state) q.state = filters.state;
+    if (filters.uf) q.uf = filters.uf;
+    if (filters.startAge) q.startAge = filters.startAge;
+    if (filters.endAge) q.endAge = filters.endAge;
+    if (filters.startDate) q.startDate = filters.startDate;
+    if (filters.endDate) q.endDate = filters.endDate;
+    if (filters.isCastrated !== '') q.isCastrated = filters.isCastrated;
+
+    if (onApply) onApply(q);
+    else console.log('Filtros aplicados:', q);
+  };
+
+  useEffect(() => {
+    (async () => {
+      try {
+        setLoadingStates(true);
+        const res = await fetch(
+          'https://servicodados.ibge.gov.br/api/v1/localidades/estados',
+        );
+        const data = await res.json();
+        data.sort((a: any, b: any) => a.nome.localeCompare(b.nome));
+        setStates(data);
+      } catch (err) {
+      } finally {
+        setLoadingStates(false);
+      }
+    })();
+  }, []);
+  const handleStateChange = async (stateIdOrSigla: string) => {
+    const stateObj = states.find(
+      (s) => s.sigla === stateIdOrSigla || String(s.id) === stateIdOrSigla,
+    );
+    if (!stateObj) return;
+    updateFilter('state', stateObj.nome);
+    updateFilter('uf', stateObj.sigla);
+    try {
+      setLoadingCities(true);
+      const res = await fetch(
+        `https://servicodados.ibge.gov.br/api/v1/localidades/estados/${stateObj.id}/municipios`,
+      );
+      const data = await res.json();
+      const names = data
+        .map((c: any) => c.nome)
+        .sort((a: string, b: string) => a.localeCompare(b));
+      setCities(names);
+    } catch (err) {
+      setCities([]);
+    } finally {
+      setLoadingCities(false);
+    }
   };
 
   return (
     <div className='w-full  bg-white font-sans'>
-      {/* Header dos Filtros */}
       <div className='flex items-center justify-between mb-6 pb-4 border-b border-gray-200'>
         <h2 className='text-lg font-medium text-primary font-sans'>Filtro</h2>
         <button
@@ -142,55 +154,152 @@ const AdoptionFilters = () => {
         </button>
       </div>
 
-      {/* Filtros */}
       <div className='space-y-6'>
-        {/* Filtro Animal */}
+        <h3 className='text-lg font-medium text-gray-900 mb-3 font-sans'>
+            Pet
+          </h3>
         <div>
-          <FilterSelect
-            label='Animal'
-            options={animais}
-            value={filters.animal}
-            onChange={(value: string) => updateFilter('animal', value)}
-            placeholder='Selecione o tipo'
-          />
-        </div>
-
-        {/* Filtro Idade */}
-        <div>
-          <FilterSelect
-            options={idades}
-            value={filters.idade}
-            onChange={(value: string) => updateFilter('idade', value)}
-            placeholder='Selecione a idade'
-          />
-        </div>
-
-        {/* Filtro Gênero */}
-        <div>
-          <div className='p-1 rounded-lg'>
-            <FilterSelect
-              options={generos}
-              value={filters.genero}
-              onChange={(value: string) => updateFilter('genero', value)}
-              placeholder='Selecione o gênero'
+          <Field label='Tipo'>
+            <Select
+              options={animais}
+              value={filters.species}
+              onChange={(value: string) => updateFilter('species', value)}
+              placeholder='Selecione o tipo'
+              searchable
             />
+          </Field>
+        </div>
+
+        <div className='flex gap-3'>
+          <div className='w-1/2'>
+            <Field label='Idade mínima (anos)'>
+              <input
+                type='number'
+                min={0}
+                className={"w-full border border-gray-300 rounded-lg px-4 py-3"}
+                value={filters.startAge}
+                onChange={(e) => updateFilter('startAge', e.target.value)}
+                placeholder='Ex: 1'
+              />
+            </Field>
+          </div>
+          <div className='w-1/2'>
+            <Field label='Idade máxima (anos)'>
+              <input
+                type='number'
+                min={0}
+                className={"w-full border border-gray-300 rounded-lg px-4 py-3"}
+                value={filters.endAge}
+                onChange={(e) => updateFilter('endAge', e.target.value)}
+                placeholder='Ex: 7'
+              />
+            </Field>
           </div>
         </div>
 
-        {/* Filtro Cidade */}
+        <div>
+          <Field label='Genêro'>
+            <Select
+              options={genders}
+              value={filters.gender}
+              onChange={(value: string) => updateFilter('gender', value)}
+              placeholder='Selecione o gênero'
+              searchable
+            />
+          </Field>
+        </div>
+
+        <div className='mb-3'>
+          <Field label='Raça'>
+              <input
+                type='text'
+                className={"w-full border border-gray-300 rounded-lg px-4 py-3"}
+                value={filters.breed}
+                onChange={(e) => updateFilter('breed', e.target.value)}
+                placeholder='Digite a raça'
+              />
+          </Field>
+        </div>
+
+        <div className='flex gap-3 mb-3'>
+          <div className='w-1/2'>
+            <Field label='Criado a partir'>
+              <input
+                type='date'
+                className={"w-full border border-gray-300 rounded-lg px-4 py-3"}
+                value={filters.startDate}
+                onChange={(e) => updateFilter('startDate', e.target.value)}
+              />
+            </Field>
+          </div>
+          <div className='w-1/2'>
+            <Field label='Criado até'>
+              <input
+                type='date'
+                className={"w-full border border-gray-300 rounded-lg px-4 py-3"}
+                value={filters.endDate}
+                onChange={(e) => updateFilter('endDate', e.target.value)}
+              />
+            </Field>
+          </div>
+        </div>
+
+        <div className='mb-4'>
+          <label className='block text-sm text-gray-600 mb-1'>Castrado</label>
+          <Select
+            options={[
+              { value: '', label: 'Indiferente' },
+              { value: 'true', label: 'Sim' },
+              { value: 'false', label: 'Não' },
+            ]}
+            value={filters.isCastrated}
+            onChange={(value: string) => updateFilter('isCastrated', value)}
+            placeholder='Selecione'
+          />
+        </div>
+
         <div>
           <h3 className='text-lg font-medium text-gray-900 mb-3 font-sans'>
             Localização
           </h3>
-          <FilterSelect
-            options={cidades}
-            value={filters.cidade}
-            onChange={(value: string) => updateFilter('cidade', value)}
-            placeholder='Selecione a cidade'
-          />
+          <div className='space-y-3'>
+            <div>
+              <Field label='Estado'>
+                <Select
+                  options={states.map((s) => ({
+                    value: s.sigla,
+                    label: `${s.nome} (${s.sigla})`,
+                  }))}
+                  value={filters.uf}
+                  onChange={(value: string) => handleStateChange(value)}
+                  placeholder={
+                    loadingStates
+                      ? 'Carregando estados...'
+                      : 'Selecione o estado'
+                  }
+                  searchable
+                />
+              </Field>
+            </div>
+
+            <div>
+              <Field label='Cidade'>
+                <Select
+                  options={cidades}
+                  value={filters.city}
+                  onChange={(value: string) => updateFilter('city', value)}
+                  placeholder={
+                    loadingCities
+                      ? 'Carregando cidades...'
+                      : 'Selecione a cidade'
+                  }
+                  searchable
+                />
+              </Field>
+            </div>
+          </div>
         </div>
 
-        {/* Botão Aplicar Filtros */}
         <div className='pt-4'>
           <Button onClick={applyFilters}>Aplicar Filtros</Button>
         </div>
