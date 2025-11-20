@@ -5,6 +5,7 @@ import type { IPet } from '~/types/IPet';
 import { getPets } from '~/services/pet-service';
 import type { IQuery } from '~/types/IQuery';
 import type { IMeta } from '~/types/IMeta';
+import type { IApiResponse } from '~/types/IApiResponse';
 
 export function AdoptionList() {
   const [loading, setLoading] = useState(false);
@@ -13,39 +14,32 @@ export function AdoptionList() {
   const [meta, setMeta] = useState<IMeta>({});
 
   useEffect(() => {
-    let mounted = true;
-
     async function load() {
       setLoading(true);
       setError(null);
 
-      const query: IQuery = { page: 1, perPage: 12 };
+      const query: IQuery = { page: 1, perPage: 1 };
 
       try {
-        const response = await getPets(query);
+        const response: IApiResponse<{
+          pets: IPet[];
+          meta: IMeta;
+        }> = await getPets(query);
 
-        if (!mounted) return;
-
-        if (response && (response as any).status) {
-          // resposta esperada: { status, message, data: { pets: [], meta: {} } }
-          const data = (response as any).data;
-          setPets(data?.pets || []);
-          setMeta(data?.meta || {});
+        if (response.status) {
+          setPets(response.data?.pets || []);
+          setMeta(response.data?.meta || {});
         } else {
           setError((response as any)?.message || 'Resposta inválida da API');
         }
       } catch (err: any) {
         setError(err?.message || 'Erro ao buscar pets');
       } finally {
-        if (mounted) setLoading(false);
+        setLoading(false);
       }
     }
 
     load();
-
-    return () => {
-      mounted = false;
-    };
   }, []);
 
   return (
