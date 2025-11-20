@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import Button from '../ui/button/button';
 import Field from '../ui/field/field';
 import { Select } from '../ui/select/select';
+import { CONTROL_BASE } from '../ui/styles';
 
 type FiltersState = {
   species: string;
@@ -92,11 +93,12 @@ const AdoptionFilters = ({ onApply }: AdoptionFiltersProps) => {
     if (filters.city) q.city = filters.city;
     if (filters.state) q.state = filters.state;
     if (filters.uf) q.uf = filters.uf;
-    if (filters.startAge) q.startAge = filters.startAge;
-    if (filters.endAge) q.endAge = filters.endAge;
+    if (filters.startAge && filters.startAge !== '') q.startAge = Number(filters.startAge);
+    if (filters.endAge && filters.endAge !== '') q.endAge = Number(filters.endAge);
     if (filters.startDate) q.startDate = filters.startDate;
     if (filters.endDate) q.endDate = filters.endDate;
-    if (filters.isCastrated !== '') q.isCastrated = filters.isCastrated;
+    if (filters.isCastrated === 'true') q.isCastrated = true;
+    if (filters.isCastrated === 'false') q.isCastrated = false;
 
     if (onApply) onApply(q);
     else console.log('Filtros aplicados:', q);
@@ -166,6 +168,7 @@ const AdoptionFilters = ({ onApply }: AdoptionFiltersProps) => {
               onChange={(value: string) => updateFilter('species', value)}
               placeholder='Selecione o tipo'
               searchable
+              allowClear
             />
           </Field>
         </div>
@@ -176,7 +179,7 @@ const AdoptionFilters = ({ onApply }: AdoptionFiltersProps) => {
               <input
                 type='number'
                 min={0}
-                className={"w-full border border-gray-300 rounded-lg px-4 py-3"}
+                className={`${CONTROL_BASE}`}
                 value={filters.startAge}
                 onChange={(e) => updateFilter('startAge', e.target.value)}
                 placeholder='Ex: 1'
@@ -188,7 +191,7 @@ const AdoptionFilters = ({ onApply }: AdoptionFiltersProps) => {
               <input
                 type='number'
                 min={0}
-                className={"w-full border border-gray-300 rounded-lg px-4 py-3"}
+                className={`${CONTROL_BASE}`}
                 value={filters.endAge}
                 onChange={(e) => updateFilter('endAge', e.target.value)}
                 placeholder='Ex: 7'
@@ -205,6 +208,7 @@ const AdoptionFilters = ({ onApply }: AdoptionFiltersProps) => {
               onChange={(value: string) => updateFilter('gender', value)}
               placeholder='Selecione o gênero'
               searchable
+              allowClear
             />
           </Field>
         </div>
@@ -213,7 +217,7 @@ const AdoptionFilters = ({ onApply }: AdoptionFiltersProps) => {
           <Field label='Raça'>
               <input
                 type='text'
-                className={"w-full border border-gray-300 rounded-lg px-4 py-3"}
+                className={`${CONTROL_BASE}`}
                 value={filters.breed}
                 onChange={(e) => updateFilter('breed', e.target.value)}
                 placeholder='Digite a raça'
@@ -226,7 +230,7 @@ const AdoptionFilters = ({ onApply }: AdoptionFiltersProps) => {
             <Field label='Criado a partir'>
               <input
                 type='date'
-                className={"w-full border border-gray-300 rounded-lg px-4 py-3"}
+                className={`${CONTROL_BASE}`}
                 value={filters.startDate}
                 onChange={(e) => updateFilter('startDate', e.target.value)}
               />
@@ -236,7 +240,7 @@ const AdoptionFilters = ({ onApply }: AdoptionFiltersProps) => {
             <Field label='Criado até'>
               <input
                 type='date'
-                className={"w-full border border-gray-300 rounded-lg px-4 py-3"}
+                className={`${CONTROL_BASE}`}
                 value={filters.endDate}
                 onChange={(e) => updateFilter('endDate', e.target.value)}
               />
@@ -255,6 +259,7 @@ const AdoptionFilters = ({ onApply }: AdoptionFiltersProps) => {
             value={filters.isCastrated}
             onChange={(value: string) => updateFilter('isCastrated', value)}
             placeholder='Selecione'
+            allowClear
           />
         </div>
 
@@ -278,6 +283,7 @@ const AdoptionFilters = ({ onApply }: AdoptionFiltersProps) => {
                       : 'Selecione o estado'
                   }
                   searchable
+                  allowClear
                 />
               </Field>
             </div>
@@ -294,6 +300,7 @@ const AdoptionFilters = ({ onApply }: AdoptionFiltersProps) => {
                       : 'Selecione a cidade'
                   }
                   searchable
+                  allowClear
                 />
               </Field>
             </div>
