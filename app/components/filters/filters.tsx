@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react';
 import Button from '../ui/button/button';
 import Field from '../ui/field/field';
 import { Select } from '../ui/select/select';
-import { CONTROL_BASE } from '../ui/styles';
 
 type FiltersState = {
   species: string;
@@ -176,10 +175,10 @@ const AdoptionFilters = ({ onApply }: AdoptionFiltersProps) => {
         <div className='flex gap-3'>
           <div className='w-1/2'>
             <Field label='Idade mínima (anos)'>
-              <input
+                <input
                 type='number'
                 min={0}
-                className={`${CONTROL_BASE}`}
+                className={'w-full border border-gray-300 rounded-lg px-4 py-3 bg-white appearance-none focus:ring-2 focus:ring-primary focus:border-primary font-sans text-sm'}
                 value={filters.startAge}
                 onChange={(e) => updateFilter('startAge', e.target.value)}
                 placeholder='Ex: 1'
@@ -191,7 +190,7 @@ const AdoptionFilters = ({ onApply }: AdoptionFiltersProps) => {
               <input
                 type='number'
                 min={0}
-                className={`${CONTROL_BASE}`}
+                className={'w-full border border-gray-300 rounded-lg px-4 py-3 bg-white appearance-none focus:ring-2 focus:ring-primary focus:border-primary font-sans text-sm'}
                 value={filters.endAge}
                 onChange={(e) => updateFilter('endAge', e.target.value)}
                 placeholder='Ex: 7'
@@ -217,7 +216,7 @@ const AdoptionFilters = ({ onApply }: AdoptionFiltersProps) => {
           <Field label='Raça'>
               <input
                 type='text'
-                className={`${CONTROL_BASE}`}
+                className={'w-full border border-gray-300 rounded-lg px-4 py-3 bg-white appearance-none focus:ring-2 focus:ring-primary focus:border-primary font-sans text-sm'}
                 value={filters.breed}
                 onChange={(e) => updateFilter('breed', e.target.value)}
                 placeholder='Digite a raça'
@@ -230,7 +229,7 @@ const AdoptionFilters = ({ onApply }: AdoptionFiltersProps) => {
             <Field label='Criado a partir'>
               <input
                 type='date'
-                className={`${CONTROL_BASE}`}
+                className={'w-full border border-gray-300 rounded-lg px-4 py-3 bg-white appearance-none focus:ring-2 focus:ring-primary focus:border-primary font-sans text-sm'}
                 value={filters.startDate}
                 onChange={(e) => updateFilter('startDate', e.target.value)}
               />
@@ -240,7 +239,7 @@ const AdoptionFilters = ({ onApply }: AdoptionFiltersProps) => {
             <Field label='Criado até'>
               <input
                 type='date'
-                className={`${CONTROL_BASE}`}
+                className={'w-full border border-gray-300 rounded-lg px-4 py-3 bg-white appearance-none focus:ring-2 focus:ring-primary focus:border-primary font-sans text-sm'}
                 value={filters.endDate}
                 onChange={(e) => updateFilter('endDate', e.target.value)}
               />

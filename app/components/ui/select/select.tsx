@@ -1,6 +1,5 @@
 import { ChevronDown } from "lucide-react";
 import { useState } from "react";
-import { CONTROL_BUTTON, CONTROL_BASE, CONTROL_ITEM } from '../styles';
 
 interface FilterOption {
   value: string;
@@ -33,7 +32,10 @@ export const Select = ({
 
   return (
     <div className='relative font-sans'>
-      <button onClick={() => setIsOpen(!isOpen)} className={CONTROL_BUTTON}>
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className={'w-full border border-gray-300 rounded-lg px-4 py-3 bg-white appearance-none focus:ring-2 focus:ring-primary focus:border-primary font-sans text-sm flex items-center justify-between'}
+      >
         <span className={selectedLabel ? 'text-gray-900 font-sans' : 'text-gray-500 font-sans'}>
           {selectedLabel || placeholder}
         </span>
@@ -49,7 +51,7 @@ export const Select = ({
                   value={filterText}
                   onChange={(e) => setFilterText(e.target.value)}
                   autoFocus
-                  className={`${CONTROL_BASE} rounded-md text-sm flex-1`}
+                  className={'w-full border border-gray-300 rounded-lg px-4 py-3 bg-white appearance-none focus:ring-2 focus:ring-primary focus:border-primary font-sans text-sm rounded-md text-sm flex-1'}
                   placeholder='Pesquisar...'
                 />
               )}
@@ -86,8 +88,9 @@ export const Select = ({
                     setIsOpen(false);
                     setFilterText('');
                   }}
-                  className={`${CONTROL_ITEM} ${
-                    value === option.value ? 'bg-orange-50 text-orange-700' : 'text-gray-900'
+                  className={`${
+                    'w-full text-left px-4 py-2 text-sm font-sans ' +
+                    (value === option.value ? 'bg-orange-50 text-orange-700' : 'text-gray-900')
                   } hover:bg-gray-50`}
                 >
                   {option.label}
