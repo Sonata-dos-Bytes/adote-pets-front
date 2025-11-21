@@ -1,4 +1,4 @@
-import type { IDog } from "~/types/IDog"
+import type { IDog } from "@/types/IDog"
 
 interface PetInfoProps {
   pet: IDog
