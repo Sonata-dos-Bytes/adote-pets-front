@@ -18,13 +18,7 @@ type FiltersState = {
   isCastrated: string;
 };
 
-interface AdoptionFiltersProps {
-  onApply?: (
-    query: Partial<Record<string, string | number | boolean | undefined>>,
-  ) => void;
-}
-
-const AdoptionFilters = ({ onApply }: AdoptionFiltersProps) => {
+const AdoptionFilters = ({ setFilteredQuery }: { setFilteredQuery: React.Dispatch<React.SetStateAction<any>> }) => {
   const [filters, setFilters] = useState<FiltersState>({
     species: '',
     startAge: '',
@@ -99,7 +93,7 @@ const AdoptionFilters = ({ onApply }: AdoptionFiltersProps) => {
     if (filters.isCastrated === 'true') q.isCastrated = true;
     if (filters.isCastrated === 'false') q.isCastrated = false;
 
-    if (onApply) onApply(q);
+    if (setFilteredQuery) setFilteredQuery(q);
     else console.log('Filtros aplicados:', q);
   };
 

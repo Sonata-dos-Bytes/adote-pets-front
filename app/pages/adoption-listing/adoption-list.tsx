@@ -50,9 +50,7 @@ export function AdoptionList() {
         <div className='flex flex-col lg:flex-row gap-8 w-full'>
             <div className='w-full lg:w-2/5 mb-8 lg:mb-0'>
             <PetFilters
-              onApply={(q) =>
-                setQuery((prev) => ({ ...(prev || {}), ...(q as any), page: 1 }))
-              }
+              setFilteredQuery={setQuery}
             />
           </div>
 
