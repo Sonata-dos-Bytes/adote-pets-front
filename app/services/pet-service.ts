@@ -20,3 +20,18 @@ export async function getPets(
     throw error;
   }
 }
+
+export async function getPetByUuid(
+  uuid: string
+): Promise<IApiResponse<{ pet: IPet }>> {
+  try {
+    const response = (await apiFetch('GET', `/pets/${uuid}`)) as IApiResponse<{
+      pet: IPet;
+    }>;
+
+    return response;
+  } catch (error) {
+    handleApiError(error, 'Falha ao buscar o pet.');
+    throw error;
+  }
+}

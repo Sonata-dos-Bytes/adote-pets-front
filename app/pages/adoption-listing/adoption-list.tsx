@@ -25,7 +25,7 @@ export function AdoptionList() {
           meta: IMeta;
         }> = await getPets(query);
 
-        if (response.status) {
+        if (response.data) {
           setPets(response.data?.pets || []);
           setMeta(response.data?.meta || {});
         } else {

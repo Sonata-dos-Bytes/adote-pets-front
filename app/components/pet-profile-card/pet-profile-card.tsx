@@ -4,6 +4,7 @@ import Badge from '../ui/badge/badge';
 import Button from '../ui/button/button';
 import { Icon } from '@iconify/react';
 import { useNavigate } from 'react-router';
+import { calculateAge } from '~/utils/dates';
 
 const PetProfileCard = ({ petData }: { petData: IPet }) => {
   const navigate = useNavigate();
@@ -11,28 +12,6 @@ const PetProfileCard = ({ petData }: { petData: IPet }) => {
 
   const image = pet.files && pet.files.length > 0 ? pet.files[0].path : '';
   const location = pet.city ? `${pet.city}, ${pet.uf || pet.state || ''}` : '';
-
-  function calculateAge(birth: string | undefined): string {
-    if (!birth) return 'Idade desconhecida';
-    try {
-      const b = new Date(birth);
-      const now = new Date();
-      let years = now.getFullYear() - b.getFullYear();
-      const m = now.getMonth() - b.getMonth();
-      if (m < 0 || (m === 0 && now.getDate() < b.getDate())) {
-        years--;
-      }
-      if (years <= 0) {
-        const months = (now.getFullYear() - b.getFullYear()) * 12 + m;
-        if (months <= 1) return `${months} mês`;
-        return `${months} meses`;
-      }
-      return `${years} ${years === 1 ? 'ano' : 'anos'}`;
-    } catch {
-      return 'Idade desconhecida';
-    }
-  }
-
   const ageLabel = calculateAge(pet.birthDay);
   const genderLabel = pet.gender === 'male' ? 'Macho' : pet.gender === 'female' ? 'Fêmea' : pet.gender;
 
