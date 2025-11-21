@@ -4,7 +4,7 @@ import Badge from '../ui/badge/badge';
 import Button from '../ui/button/button';
 import { Icon } from '@iconify/react';
 import { useNavigate } from 'react-router';
-import { calculateAge } from '~/utils/dates';
+import { calculateAge, formatGender } from '~/utils/formatted-data';
 
 const PetProfileCard = ({ petData }: { petData: IPet }) => {
   const navigate = useNavigate();
@@ -13,7 +13,7 @@ const PetProfileCard = ({ petData }: { petData: IPet }) => {
   const image = pet.files && pet.files.length > 0 ? pet.files[0].path : '';
   const location = pet.city ? `${pet.city}, ${pet.uf || pet.state || ''}` : '';
   const ageLabel = calculateAge(pet.birthDay);
-  const genderLabel = pet.gender === 'male' ? 'Macho' : pet.gender === 'female' ? 'Fêmea' : pet.gender;
+  const genderLabel = formatGender(pet.gender);
 
   return (
     <Card className='w-full h-full'>

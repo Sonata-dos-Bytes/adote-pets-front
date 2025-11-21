@@ -10,7 +10,7 @@ import PetInfo from '~/components/pet-info/pet-info';
 import { getPetByUuid, getPets } from '~/services/pet-service';
 import type { IApiResponse } from '~/types/IApiResponse';
 import type { IPet } from '~/types/IPet';
-import { calculateAge } from '~/utils/dates';
+import { calculateAge, formatGender } from '~/utils/formatted-data';
 
 export default function AdoptionSpecific() {
   const { uuid } = useParams<{ uuid: string }>();
@@ -58,6 +58,7 @@ export default function AdoptionSpecific() {
   }
 
   const ageLabel = calculateAge(pet.birthDay);
+  const genderLabel = formatGender(pet.gender);
 
   return (
     <main className='max-w-full md:max-w-[1350px] mx-auto main-content p-4 md:p-0 my-6'>
@@ -78,7 +79,7 @@ export default function AdoptionSpecific() {
           <div className='flex w-full justify-between items-center mt-6 mb-10'>
             <PetAttributeCard
               title='Gênero'
-              value={pet.gender}
+              value={genderLabel}
               icon={<Venus size={22} color='#D77445' />}
             />
             <PetAttributeCard

@@ -18,3 +18,12 @@ export function calculateAge(birth: string | null): string {
     return 'Idade desconhecida';
   }
 }
+
+export function formatGender(gender: string | null): string {
+  if (!gender) return 'Gênero desconhecido';
+  switch (gender.toLowerCase()) {
+    case 'male':  return 'Macho';
+    case 'female': return 'Fêmea';
+    default: return gender;
+  }
+}
