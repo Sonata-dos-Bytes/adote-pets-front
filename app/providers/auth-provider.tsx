@@ -55,7 +55,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   }, []);
 
   const signIn = async ({ login, password }: SignIn) => {
-    console.log('Iniciando signIn com:', { login, password });
     try {
       setIsLoading(true);
       const res = (await loginUser({ login, password })) as unknown as {

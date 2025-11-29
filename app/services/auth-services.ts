@@ -12,7 +12,6 @@ export const registerUser = async (data: SignUp) => {
 };
 
 export const loginUser = async (data: SignIn) => {
-  console.log('Dados de login enviados:', data);
   try {
     const response = await apiFetch('POST', '/login', data);
     return response;

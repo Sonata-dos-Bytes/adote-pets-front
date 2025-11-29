@@ -18,7 +18,6 @@ export default function AdoptionSpecific() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [pet, setPet] = useState<IPet | null>(null);
-  console.log('uuid:', uuid);
 
   useEffect(() => {
     async function load() {
