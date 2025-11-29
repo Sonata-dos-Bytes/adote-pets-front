@@ -2,9 +2,10 @@ import React from 'react';
 
 interface ButtonProps {
   children: React.ReactNode;
+  variant?: 'primary' | 'outlined';
   type?: 'button' | 'submit' | 'reset';
+  disabled?: boolean;
   onClick?: () => void;
-  variant?: 'primary' | 'ghost';
 }
 
 export default function Button({ children, type = 'button', onClick, variant = 'primary' }: ButtonProps) {

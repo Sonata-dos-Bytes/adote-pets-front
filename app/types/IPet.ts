@@ -1,6 +1,7 @@
 import type { IFile } from "./IFile";
+import type { IAdoptionRequest } from "./IAdoption";
 
-interface IPet {
+export interface IPet {
   externalId: string;
   createdAt: string;
   updatedAt: string;
@@ -17,8 +18,22 @@ interface IPet {
   isCastrated: boolean;
   isAdote: boolean;
   files: IFile[];
+  id?: number;
+  location?: string;
+  age?: string;
+  description?: string;
+  image?: string;
 }
 
-export type {
-  IPet,
+export interface IPetWithRequests {
+  pet: IPet;
+  requests: IAdoptionRequest[];
+}
+
+export interface IPetFile {
+  externalId: string;
+  path: string;
+  mimeType: string;
+  type: string;
+  orderIndex: number;
 }

@@ -1,74 +1,81 @@
-// import Cookies from "js-cookie"
-// import { jwtDecode } from "jwt-decode"
+import Cookies from 'js-cookie';
+import { jwtDecode } from 'jwt-decode';
 
-// interface JWTPayload {
-//   exp?: number
-//   iat?: number
-//   [key: string]: unknown
-// }
+interface JWTPayload {
+  exp?: number;
+  iat?: number;
+  [key: string]: unknown;
+}
 
-// function logout() {
-//   Cookies.remove("@app-token")
-//   Cookies.remove("@app-token-refresh")
-//   Cookies.remove("@app-user")
+function logout() {
+  Cookies.remove('@app-token');
+  Cookies.remove('@app-user');
 
-//   sessionStorage.clear()
+  sessionStorage.clear();
 
-//   window.location.href = "/"
-// }
+  window.location.href = '/';
+}
 
-// export async function getAuthToken(): Promise<string | undefined> {
-//   const tokenStr = Cookies.get("@app-token")
+export async function getAuthToken(): Promise<string | undefined> {
+  const tokenStr = Cookies.get('@app-token');
 
-//   if (!tokenStr) {
-//     return undefined
-//   }
+  if (!tokenStr) {
+    return undefined;
+  }
 
-//   try {
-//     const decoded = jwtDecode<JWTPayload>(tokenStr)
+  try {
+    const decoded = jwtDecode<JWTPayload>(tokenStr);
 
-//     if (decoded.exp) {
-//       const currentTime = Math.floor(Date.now() / 1000)
-//       const isExpired = decoded.exp < currentTime
+    if (decoded.exp) {
+      const currentTime = Math.floor(Date.now() / 1000);
+      const isExpired = decoded.exp < currentTime;
 
-//       if (isExpired) {
-//         console.warn("Token expirado. Realizando logout...")
-//         logout()
-//         return
-//       }
-//     }
+      if (isExpired) {
+        console.warn('Token expirado. Realizando logout...');
+        logout();
+        return;
+      }
+    }
 
-//     return tokenStr
-//   } catch (error) {
-//     logout()
-//     console.error("Erro ao validar token:", error)
-//     return
-//   }
-// }
+    return tokenStr;
+  } catch (error) {
+    logout();
+    console.error('Erro ao validar token:', error);
+    return;
+  }
+}
 
 export async function apiFetch(
-  method: "GET" | "POST" | "PUT" | "DELETE",
+  method: 'GET' | 'POST' | 'PUT' | 'DELETE',
   url: string,
   params: Record<string, string> = {},
   body: unknown = null,
-  headers: Record<string, string> = {}
+  headers: Record<string, string> = {},
 ): Promise<unknown> {
-  const token = null // Futura implementação: await getAuthToken()
+  const token = await getAuthToken();
 
   const defaultHeaders: Record<string, string> = {
-    "Content-Type": "application/json",
-    Accept: "application/json",
-    Authorization: token ? `Bearer ${token}` : "",
+    Accept: 'application/json',
+    Authorization: token ? `Bearer ${token}` : '',
     ...headers,
+  };
+
+  const isFormData = body instanceof FormData;
+  if (!isFormData && !headers['Content-Type']) {
+    defaultHeaders['Content-Type'] = 'application/json';
   }
 
   const options: RequestInit = {
     method,
     headers: defaultHeaders,
-  }
+  };
 
   if (body) {
-    options.body = JSON.stringify(body)
+    if (isFormData) {
+      options.body = body as FormData;
+    } else {
+      options.body = JSON.stringify(body);
+    }
   }
 
   if (method === "GET" && Object.keys(params).length > 0) {
@@ -77,26 +84,27 @@ export async function apiFetch(
   }
 
   try {
-    const fallbackEnv = import.meta.env.VITE_API_URL
-    const response = await fetch(fallbackEnv + url, options)
+    const fallbackEnv = import.meta.env.VITE_API_URL;
+    const response = await fetch(fallbackEnv + url, options);
 
     if (!response.ok) {
-      const errorData: { message?: string } = await response.json()
+      const errorData: { message?: string } = await response.json();
+      console.error('API error response:', errorData);
       throw new Error(
         `HTTP error! Status: ${response.status}, Message: ${
-          errorData.message || "Unknown error"
-        }`
-      )
+          errorData.message || 'Unknown error'
+        }`,
+      );
     }
 
-    const contentType = response.headers.get("content-type")
-    if (contentType && contentType.includes("application/json")) {
-      return await response.json()
+    const contentType = response.headers.get('content-type');
+    if (contentType && contentType.includes('application/json')) {
+      return await response.json();
     } else {
-      return await response.text()
+      return await response.text();
     }
   } catch (error) {
-    console.error("Fetch error:", error)
-    throw error
+    console.error('Fetch error:', error);
+    throw error;
   }
 }

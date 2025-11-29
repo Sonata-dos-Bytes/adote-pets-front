@@ -1,4 +1,5 @@
-import type { IPet } from "~/types/IPet";
+import type { IPet } from "@/types/IPet";
+
 
 export default function PetInfo({ pet }: { pet: IPet }) {
   return (
