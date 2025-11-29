@@ -215,8 +215,8 @@ export default function PetRegistration() {
                             {errors.city && <p className="text-red-600 text-sm mt-1">{errors.city}</p>}
                         </div>
 
-                        <div>
-                            <p className="block text-base font-bold mb-2">Seu animal de estimação é castrado ou esterilizado? *</p>
+                        <div className="flex gap-6 items-center">
+                            <p className="block text-base font-bold">Seu animal de estimação é castrado ou esterilizado? *</p>
                             <div className="flex items-center gap-6">
                                 <label className="inline-flex items-center">
                                     <input
