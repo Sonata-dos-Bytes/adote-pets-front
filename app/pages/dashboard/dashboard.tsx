@@ -196,7 +196,7 @@ export default function Dashboard() {
               ))
             ) : (
               <div className='bg-white rounded-lg shadow-md p-12'>
-                ){' '}
+                {' '}
                 <div className='text-center'>
                   <div className='text-gray-400 text-5xl mb-4'>🐾</div>
                   <p className='text-gray-500'>

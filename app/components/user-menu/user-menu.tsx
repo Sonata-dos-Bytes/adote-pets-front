@@ -100,14 +100,14 @@ export default function UserMenu() {
           </div>
 
           <button
-            onClick={() => handleNavigation('/painel')}
+            onClick={() => handleNavigation('/dashboard')}
             className='w-full text-left flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors'
           >
             <Home className='w-4 h-4' /> Meu Painel
           </button>
 
           <button
-            onClick={() => handleNavigation('/perfil')}
+            onClick={() => handleNavigation('/profile')}
             className='w-full text-left flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors'
           >
             <User className='w-4 h-4' /> Meu Perfil

@@ -202,7 +202,7 @@ export default function Header() {
                     <Button
                       variant='outlined'
                       className='w-48 flex items-center justify-center gap-2'
-                      onClick={() => handleNavigation('/painel')}
+                      onClick={() => handleNavigation('/dashboard')}
                     >
                       <Home /> Meu Painel
                     </Button>
@@ -210,7 +210,7 @@ export default function Header() {
                     <Button
                       variant='outlined'
                       className='w-48 flex items-center justify-center gap-2'
-                      onClick={() => handleNavigation('/perfil')}
+                      onClick={() => handleNavigation('/profile')}
                     >
                       <User /> Meu Perfil
                     </Button>
