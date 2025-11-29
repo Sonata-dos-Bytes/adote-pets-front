@@ -1,15 +1,17 @@
 import { MyRequestCard } from '@/components/my-request-card/my-request-card';
 import { PetRequestCard } from '@/components/pet-request-card/pet-request-card';
+import Button from '@/components/ui/button/button';
 import { useAuth } from '@/contexts/auth-context';
 import {
   getMyRequests,
   getPetRequests,
 } from '@/services/adoption-request-services';
-import { getMyPets } from '@/services/pet-services';
+import { getMyPets, updatePet } from '@/services/pet-services';
 import type { IAdoptionRequest } from '@/types/IAdoption';
 import type { IPet, IPetWithRequests } from '@/types/IPet';
 import { calculateAge, getPetImage } from '@/utils';
 import React from 'react';
+import { toast } from 'react-toastify';
 
 export default function Dashboard() {
   const { user } = useAuth();
@@ -61,6 +63,24 @@ export default function Dashboard() {
     (sum, item) => sum + item.requests.length,
     0,
   );
+
+  const handleHasAdopted = async (pet: IPet) => {
+    try {
+      const response = await updatePet(pet.externalId, {
+        ...pet,
+        isAdote: true,
+      });
+
+      if (response.data) {
+        toast.error('Erro ao atualizar o status do pet.');
+        return;
+      }
+
+      toast.success('Status do pet atualizado com sucesso!');
+    } catch (error) {
+      console.error('Erro ao atualizar pet:', error);
+    }
+  };
 
   return (
     <div className='container mx-auto px-4 py-8'>
@@ -163,7 +183,7 @@ export default function Dashboard() {
                   key={petWithRequests.pet.externalId}
                   className='bg-white rounded-lg shadow-md mb-6'
                 >
-                  <div className='p-6 border-b border-gray-200'>
+                  <div className='flex flex-row justify-between p-6 border-b border-gray-200'>
                     <div className='flex gap-4 items-center'>
                       <img
                         src={getPetImage(petWithRequests.pet.files)}
@@ -180,6 +200,19 @@ export default function Dashboard() {
                         </p>
                       </div>
                     </div>
+                    {!petWithRequests.pet.isAdote ? (
+                      <div>
+                        <Button
+                          onClick={() => handleHasAdopted(petWithRequests.pet)}
+                        >
+                          Adoção Finalizada
+                        </Button>
+                      </div>
+                    ) : (
+                      <div className='bg-green-100 text-green-800 px-4 rounded-lg font-semibold flex items-center justify-center'>
+                        ✓ Pet Adotado
+                      </div>
+                    )}
                   </div>
                   <div className='p-6'>
                     <div className='flex items-center justify-between mb-4'>

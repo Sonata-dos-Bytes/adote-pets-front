@@ -44,7 +44,7 @@ export function AdoptionList() {
   return (
     <div className='container mx-auto px-4 py-8'>
       <div className='flex flex-col gap-10'>
-        <h1 className='text-4xl font-bold mb-4'>
+        <h1 className='text-4xl font-bold mb-4 text-secondary'>
           Animais Disponíveis para Adoção
         </h1>
         <div className='flex flex-col lg:flex-row gap-8 w-full'>

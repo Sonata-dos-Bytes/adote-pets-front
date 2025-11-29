@@ -1,5 +1,6 @@
 import type { IAdoptionRequest } from '@/types/IAdoption';
 import { calculateAge, formatDate, getPetImage } from '@/utils';
+import { Link } from 'react-router';
 
 export const MyRequestCard: React.FC<{ request: IAdoptionRequest }> = ({
   request,
@@ -19,7 +20,7 @@ export const MyRequestCard: React.FC<{ request: IAdoptionRequest }> = ({
         />
         <div className='flex-1 min-w-0'>
           <div className='flex items-start justify-between gap-2 mb-2'>
-            <div>
+            <div className='flex-1'>
               <h4 className='font-semibold text-secondary text-lg'>
                 {request.pet.name}
               </h4>
@@ -29,10 +30,25 @@ export const MyRequestCard: React.FC<{ request: IAdoptionRequest }> = ({
               <p className='text-sm text-gray-600'>
                 {request.pet.city}, {request.pet.uf}
               </p>
+              {request.pet.isAdote && (
+                <span className='inline-block mt-1 px-2 py-1 bg-green-100 text-green-700 text-xs font-medium rounded'>
+                  ✓ Adotado
+                </span>
+              )}
             </div>
-            <span className='text-xs text-gray-500 whitespace-nowrap'>
-              {formatDate(request.createdAt)}
-            </span>
+            <div className='flex flex-col items-end h-full'>
+              <span className='text-xs text-gray-500 whitespace-nowrap'>
+                {formatDate(request.createdAt)}
+              </span>
+              {!request.pet.isAdote && (
+                <Link
+                  to={`/adoption/${request.pet.externalId}`}
+                  className='text-secondary text-sm underline hover:text-secondary/90 transition-colors mt-auto'
+                >
+                  Ver Pet
+                </Link>
+              )}
+            </div>
           </div>
           <div className='mt-2'>
             <p className='text-xs text-gray-500 mb-1'>Sua mensagem:</p>

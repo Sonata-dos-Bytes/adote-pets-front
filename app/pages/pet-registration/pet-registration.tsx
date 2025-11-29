@@ -68,21 +68,13 @@ export default function PetRegistration() {
         const url = URL.createObjectURL(file);
         const imgEl = new Image();
         imgEl.onload = () => {
-            if (imgEl.width !== 808 || imgEl.height !== 414) {
-                URL.revokeObjectURL(url);
-                setImages((prev) => {
-                    const next = [...prev];
-                    next[index] = { file: null, preview: null, error: 'Dimensões inválidas. Deve ser 808x414.' };
-                    return next;
-                });
-            } else {
-                setImages((prev) => {
-                    const next = [...prev];
-                    if (next[index].preview) URL.revokeObjectURL(next[index].preview as string);
-                    next[index] = { file, preview: url, error: '' };
-                    return next;
-                });
-            }
+            setImages((prev) => {
+                const next = [...prev];
+                if (next[index].preview) URL.revokeObjectURL(next[index].preview as string);
+                next[index] = { file, preview: url, error: '' };
+                return next;
+            });
+
         };
         imgEl.onerror = () => {
             URL.revokeObjectURL(url);
@@ -157,7 +149,7 @@ export default function PetRegistration() {
                 uf: form.uf.trim().toUpperCase(),
                 birthDay,
                 isCastrated: form.sterilized === 'yes',
-                isAdote: true,
+                isAdote: false,
                 lore: form.story.trim(),
                 files: filesArray,
             };
@@ -354,7 +346,6 @@ export default function PetRegistration() {
                     <div className="space-y-4">
                         <h3 className="text-4xl font-extrabold mb-12 text-left">Imagens</h3>
                         <p className="text-base font-bold text-black">O formato da imagem deve (.jpg, .png, .jpeg).</p>
-                        <p className="text-base font-bold text-black">As medidas da imagem devem ser 808 x 414 pixels.</p>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             {images.map((img, idx) => (

@@ -25,7 +25,7 @@ export async function getPetByUuid(
   uuid: string,
 ): Promise<IApiResponse<{ pet: IPet }>> {
   try {
-    const response = (await apiFetch('GET', `/pets/${uuid}`)) as IApiResponse<{
+    const response = (await apiFetch('GET', `/pets/${uuid}`, null, {}, {}, false)) as IApiResponse<{
       pet: IPet;
     }>;
 
@@ -82,6 +82,19 @@ export async function registerPet(token: string, payload: IPet): Promise<any> {
   } catch (error) {
     handleApiError(error, 'Falha ao registrar pet.');
     throw error;
+  }
+}
+
+export async function updatePet(uuid: string, payload: IPet) {
+  try {
+    const response: any = await apiFetch(
+      'PUT',
+      `/pets/${uuid}`,
+      payload,
+    );
+    return response.data;
+  } catch (error) {
+    handleApiError(error, 'Falha ao registrar usuário.');
   }
 }
 
