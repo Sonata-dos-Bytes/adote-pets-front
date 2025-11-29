@@ -40,6 +40,7 @@ const AdoptionFilters = ({ setFilteredQuery }: { setFilteredQuery: React.Dispatc
   const [loadingCities, setLoadingCities] = useState(false);
 
   const animais = [
+    { value: '', label: 'Indiferente' },
     { value: 'dog', label: 'Cachorro' },
     { value: 'cat', label: 'Gato' },
     { value: 'coelho', label: 'Coelho' },
