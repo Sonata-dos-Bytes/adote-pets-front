@@ -54,11 +54,15 @@ export async function apiFetch(
   const token = await getAuthToken();
 
   const defaultHeaders: Record<string, string> = {
-    'Content-Type': 'application/json',
     Accept: 'application/json',
     Authorization: token ? `Bearer ${token}` : '',
     ...headers,
   };
+
+  const isFormData = body instanceof FormData;
+  if (!isFormData && !headers['Content-Type']) {
+    defaultHeaders['Content-Type'] = 'application/json';
+  }
 
   const options: RequestInit = {
     method,
@@ -66,7 +70,11 @@ export async function apiFetch(
   };
 
   if (body) {
-    options.body = JSON.stringify(body);
+    if (isFormData) {
+      options.body = body as FormData;
+    } else {
+      options.body = JSON.stringify(body);
+    }
   }
 
   try {

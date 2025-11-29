@@ -73,6 +73,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       }
 
       setUser(res.data.user as User);
+      setToken(res.data.token);
 
       Cookies.set('@app-token', res.data.token, {
         expires: 7,
@@ -85,6 +86,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         secure: true,
         sameSite: 'strict',
       });
+
+      return { error: false, message: 'Login realizado com sucesso' };
     } catch (error: unknown) {
       signOut();
       throw error;
