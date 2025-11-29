@@ -45,34 +45,40 @@ export interface UpdateProfilePayload {
 
 export const updateUserProfile = async (
   payload: UpdateProfilePayload
-): Promise<UserData | null> => {
+): Promise<boolean> => {
   try {
     const formData = new FormData();
 
-    if (payload.name) formData.append('name', payload.name);
-    if (payload.phone !== undefined) formData.append('phone', payload.phone || '');
-    if (payload.oldPassword) formData.append('oldPassword', payload.oldPassword);
-    if (payload.password) formData.append('password', payload.password);
-    if (payload.passwordConfirmation) {
-      formData.append('passwordConfirmation', payload.passwordConfirmation);
+    if (payload.name) {
+      formData.append('name', payload.name);
     }
-    if (payload.avatar) formData.append('avatar', payload.avatar);
-
-    const response = (await apiFetch(
+    
+    if (payload.phone !== undefined) {
+      formData.append('phone', payload.phone || '');
+    }
+    
+    if (payload.oldPassword && payload.password) {
+      formData.append('oldPassword', payload.oldPassword);
+      formData.append('password', payload.password);
+      if (payload.passwordConfirmation) {
+        formData.append('passwordConfirmation', payload.passwordConfirmation);
+      }
+    }
+    
+    if (payload.avatar) {
+      formData.append('avatar', payload.avatar);
+    }
+    
+    const response = await apiFetch(
       'PUT',
       '/auth/update-profile',
-      {
-        body: formData,
-      }
-    )) as UserResponse;
+      formData 
+    );
 
-    if (response?.status && response?.data?.user) {
-      return response.data.user;
-    }
-
-    return null;
-  } catch (error) {
+    return true;
+  } catch (error: any) {
+    console.error('Erro ao atualizar perfil:', error);
     handleApiError(error, 'Falha ao atualizar perfil.');
-    return null;
+    throw error;
   }
 };
