@@ -1,4 +1,4 @@
-import AdoptionSpecific from '~/pages/adoption-listing/[id]/page';
+import AdoptionSpecific from '@/pages/adoption-listing/[id]/page';
 import type { Route } from '../+types/home';
 
 export function meta({}: Route.MetaArgs) {

@@ -1,9 +1,9 @@
-import type { IPet } from '~/types/IPet';
+import type { IPet } from '@/types/IPet';
+import { Icon } from '@iconify/react';
+import { useNavigate } from 'react-router';
 import { Card } from '../card/card';
 import Badge from '../ui/badge/badge';
 import Button from '../ui/button/button';
-import { Icon } from '@iconify/react';
-import { useNavigate } from 'react-router';
 
 const PetProfileCard = ({ petData }: { petData: IPet }) => {
   let navigate = useNavigate();

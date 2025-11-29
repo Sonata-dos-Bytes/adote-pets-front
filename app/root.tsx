@@ -7,10 +7,13 @@ import {
   ScrollRestoration,
 } from 'react-router';
 
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import type { Route } from './+types/root';
 import './app.css';
-import Header from './components/header/header';
 import Footer from './components/footer/footer';
+import Header from './components/header/header';
+import { AuthProvider } from './providers/auth-provider';
 
 export const links: Route.LinksFunction = () => [
   { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
@@ -38,10 +41,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <body className='flex flex-col min-h-[100vh]'>
-        <Header />
-        {children}
-        <Footer />
+      <body className='flex flex-col min-h-[100vh] '>
+        <AuthProvider>
+          <ToastContainer position='bottom-right' className='!z-[99999]' />
+          <Header />
+          {children}
+          <Footer />
+        </AuthProvider>
         <ScrollRestoration />
         <Scripts />
       </body>
