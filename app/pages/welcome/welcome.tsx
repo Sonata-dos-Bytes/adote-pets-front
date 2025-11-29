@@ -1,5 +1,5 @@
-import Button from '~/components/ui/button/button';
 import { useNavigate } from 'react-router';
+import Button from '@/components/ui/button/button';
 import welcomeBackground from '/assets/images/welcome-background.svg';
 import welcomeImage from '/assets/images/welcome-picture.svg';
 
@@ -8,6 +8,7 @@ export function Welcome() {
   return (
     <main className='flex flex-col xl:flex-row items-center justify-between min-h-screen py-8 xl:py-12 px-[5%] xl:px-[5%] gap-16 xl:gap-16 overflow-x-hidden max-w-[1400px] xl:max-w-[1400px] mx-auto'>
       <section className='flex-1 flex flex-col justify-center gap-7 xl:gap-7 max-w-full xl:max-w-[520px] text-center xl:text-left items-center xl:items-start xl:pr-4'>
+        
         <div>
           <h1 className='text-3xl sm:text-4xl lg:text-5xl mb-2 text-primary font-bold leading-tight'>
             O Novo <span className='text-secondary'>Melhor Amigo</span> da Sua
@@ -22,9 +23,7 @@ export function Welcome() {
         </div>
         <div className='flex flex-col sm:flex-row flex-wrap gap-4 w-full sm:w-auto justify-center xl:justify-start max-w-full sm:max-w-[400px] xl:max-w-none'>
           <div className='flex-1 min-w-[140px] flex w-full sm:w-auto'>
-            <Button bgColor='#D77445' textColor='#fff3ed'>
-              Adote Agora
-            </Button>
+            <Button variant='outlined'>Adote Agora</Button>
           </div>
           <div className='flex-1 min-w-[140px] flex w-full sm:w-auto'>
             <Button onClick={() => navigate('/cadastro-pet')}>Doe Agora</Button>

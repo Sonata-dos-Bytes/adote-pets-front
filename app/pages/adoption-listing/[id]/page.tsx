@@ -1,12 +1,12 @@
+import CardWithButton from '@/components/card-with-button/card-with-button';
+import Gallery from '@/components/gallery/gallery';
+import HistoryCard from '@/components/history-card/history-card';
+import LocationInfo from '@/components/location-info/location-info';
+import PetAttributeCard from '@/components/pet-attribute-card/pet-attribute-card';
+import PetInfo from '@/components/pet-info/pet-info';
+import type { IPet } from '@/types/IPet';
 import { Clock, PawPrint, Venus } from 'lucide-react';
 import { useParams } from 'react-router';
-import CardWithButton from '~/components/card-with-button/card-with-button';
-import Gallery from '~/components/gallery/gallery';
-import HistoryCard from '~/components/history-card/history-card';
-import LocationInfo from '~/components/location-info/location-info';
-import PetAttributeCard from '~/components/pet-attribute-card/pet-attribute-card';
-import PetInfo from '~/components/pet-info/pet-info';
-import type { IPet } from '~/types/IPet';
 
 const petImages = [
   {
