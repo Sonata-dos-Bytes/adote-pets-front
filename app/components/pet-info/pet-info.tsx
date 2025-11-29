@@ -1,7 +1,7 @@
-import type { IDog } from "@/types/IDog"
+import type { IPet } from "@/types/IPet"
 
 interface PetInfoProps {
-  pet: IDog
+  pet: IPet
 }
 
 export default function PetInfo({ pet }: PetInfoProps) {
