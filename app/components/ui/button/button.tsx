@@ -6,33 +6,17 @@ interface ButtonProps {
   type?: 'button' | 'submit' | 'reset';
   disabled?: boolean;
   onClick?: () => void;
-  className?: string;
-  bgColor?: string;
-  textColor?: string;
 }
 
-export default function Button({
-  children,
-  variant = 'primary',
-  type = 'button',
-  disabled = false,
-  onClick,
-  className,
-  bgColor,
-  textColor,
-}: ButtonProps) {
-  const variantClasses = {
-    primary: 'bg-primary text-white',
-    outlined: 'border text-primary',
-  };
+export default function Button({ children, type = 'button', onClick, variant = 'primary' }: ButtonProps) {
+  const base = 'w-full border border-gray-300 rounded-lg px-4 py-3 font-semibold text-sm transition-colors duration-200';
+  const variantClasses =
+    variant === 'primary'
+      ? 'bg-orange-50 text-orange-700 border-orange-700 hover:bg-orange-700 hover:text-white'
+      : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-100';
+
   return (
-    <button
-      type={type}
-      onClick={onClick}
-      disabled={disabled}
-      className={`py-2 px-4 ${variantClasses[variant]} hover:bg-primary/80 rounded cursor-pointer font-semibold flex-1 transition-all duration-300 ease-in-out w-full hover:border-opacity-100 ${className}`}
-      style={{ backgroundColor: bgColor, color: textColor }}
-    >
+    <button type={type} onClick={onClick} className={`${base} ${variantClasses}`}>
       {children}
     </button>
   );

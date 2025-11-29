@@ -48,6 +48,7 @@ export async function getAuthToken(): Promise<string | undefined> {
 export async function apiFetch(
   method: 'GET' | 'POST' | 'PUT' | 'DELETE',
   url: string,
+  params: Record<string, string> = {},
   body: unknown = null,
   headers: Record<string, string> = {},
 ): Promise<unknown> {
@@ -75,6 +76,11 @@ export async function apiFetch(
     } else {
       options.body = JSON.stringify(body);
     }
+  }
+
+  if (method === "GET" && Object.keys(params).length > 0) {
+    const queryString = new URLSearchParams(params).toString()
+    url += `?${queryString}`
   }
 
   try {

@@ -4,15 +4,20 @@ import { useNavigate } from 'react-router';
 import { Card } from '../card/card';
 import Badge from '../ui/badge/badge';
 import Button from '../ui/button/button';
+import { calculateAge, formatGender } from '@/utils/formatted-data';
 
 const PetProfileCard = ({ petData }: { petData: IPet }) => {
-  let navigate = useNavigate();
-
+  const navigate = useNavigate();
   const pet = petData;
+
+  const image = pet.files && pet.files.length > 0 ? pet.files[0].path : '';
+  const location = pet.city ? `${pet.city}, ${pet.uf || pet.state || ''}` : '';
+  const ageLabel = calculateAge(pet.birthDay);
+  const genderLabel = formatGender(pet.gender);
 
   return (
     <Card className='w-full h-full'>
-      <Card.Image src={pet.image} alt={`${pet.name} - ${pet.breed}`} />
+      <Card.Image src={image} alt={`${pet.name} - ${pet.breed}`} />
 
       <Card.Content>
         {/* Nome e localização */}
@@ -20,7 +25,7 @@ const PetProfileCard = ({ petData }: { petData: IPet }) => {
           <h2 className='text-2xl font-bold text-gray-800 mb-1'>{pet.name}</h2>
           <div className='flex items-center text-gray-500 text-sm'>
             <Icon icon='mingcute:location-fill' className='mr-1 w-4 h-4' />
-            {pet.location}
+            {location}
           </div>
         </div>
 
@@ -29,7 +34,7 @@ const PetProfileCard = ({ petData }: { petData: IPet }) => {
           <div>
             <span className='font-sans font-bold mr-1'>Gênero:</span>
             <Badge variant='primary'>
-              <span className='font-sans font-bold'>{pet.gender}</span>
+              <span className='font-sans font-bold'>{genderLabel}</span>
             </Badge>
           </div>
 
@@ -43,19 +48,19 @@ const PetProfileCard = ({ petData }: { petData: IPet }) => {
           <div>
             <span className='font-sans font-bold mr-1'>Idade:</span>
             <Badge variant='primary'>
-              <span className=' font-bold'>{pet.age}</span>
+              <span className=' font-bold'>{ageLabel}</span>
             </Badge>
           </div>
         </div>
 
         {/* Descrição */}
         <p className='text-gray-600 text-sm leading-relaxed mb-6'>
-          {pet.description}
+          {pet.lore}
         </p>
       </Card.Content>
 
       <Card.Footer>
-        <Button onClick={() => navigate(`/adoption/1`)}>
+        <Button onClick={() => navigate(`/adoption/${pet.externalId}`)}>
           Mais informações
         </Button>
       </Card.Footer>
