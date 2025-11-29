@@ -89,13 +89,17 @@ export async function apiFetch(
     const response = await fetch(fallbackEnv + (isAuthRequired ? "/auth" : "") + url, options);
 
     if (!response.ok) {
-      const errorData: { message?: string } = await response.json();
+      const contentType = response.headers.get('content-type');
+      let errorData: unknown;
+      
+      if (contentType && contentType.includes('application/json')) {
+      errorData = await response.json();
+      } else {
+      errorData = await response.text();
+      }
+      
       console.error('API error response:', errorData);
-      throw new Error(
-        `HTTP error! Status: ${response.status}, Message: ${
-          errorData.message || 'Unknown error'
-        }`,
-      );
+      return errorData;
     }
 
     const contentType = response.headers.get('content-type');
