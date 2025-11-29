@@ -2,40 +2,21 @@ import React from 'react';
 
 interface ButtonProps {
   children: React.ReactNode;
+  variant?: 'primary' | 'outlined';
   type?: 'button' | 'submit' | 'reset';
+  disabled?: boolean;
   onClick?: () => void;
-  bgColor?: string;
-  textColor?: string;
 }
 
-export default function Button({
-  children,
-  type = 'button',
-  onClick,
-  bgColor = '#fff3ed',
-  textColor = '#F57B42',
-}: ButtonProps) {
+export default function Button({ children, type = 'button', onClick, variant = 'primary'}: ButtonProps) {
+  const base = 'w-full border border-gray-300 rounded-lg px-4 py-3 font-semibold text-sm transition-colors duration-200';
+  const variantClasses =
+    variant === 'primary'
+      ? 'bg-primary text-white border-primary hover:bg-primary/90 hover:text-white'
+      : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-100';
+
   return (
-    <button
-      type={type}
-      onClick={onClick}
-      className='py-2 px-4 border rounded cursor-pointer font-semibold flex-1 transition-all duration-300 ease-in-out w-full hover:border-opacity-100'
-      style={{
-        backgroundColor: bgColor,
-        color: textColor,
-        borderColor: textColor,
-      }}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.backgroundColor = textColor;
-        e.currentTarget.style.color = bgColor;
-        e.currentTarget.style.borderColor = bgColor;
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.backgroundColor = bgColor;
-        e.currentTarget.style.color = textColor;
-        e.currentTarget.style.borderColor = textColor;
-      }}
-    >
+    <button type={type} onClick={onClick} className={`${base} ${variantClasses}`}>
       {children}
     </button>
   );
