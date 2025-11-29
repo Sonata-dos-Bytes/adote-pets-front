@@ -6,5 +6,6 @@ export default [
   { path: '/adoption/:id', file: 'routes/adoption/[id].tsx' },
   { path: '/guides', file: 'routes/guides.tsx' },
   { path: '/about', file: 'routes/about.tsx' },
+  { path: '/cadastro-pet', file: 'routes/pet-registration.tsx' },
   { path: '/painel', file: 'routes/dashboard.tsx' },
 ] satisfies RouteConfig;

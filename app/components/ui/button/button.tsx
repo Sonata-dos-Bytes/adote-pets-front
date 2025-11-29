@@ -7,6 +7,8 @@ interface ButtonProps {
   disabled?: boolean;
   onClick?: () => void;
   className?: string;
+  bgColor?: string;
+  textColor?: string;
 }
 
 export default function Button({
@@ -16,6 +18,8 @@ export default function Button({
   disabled = false,
   onClick,
   className,
+  bgColor,
+  textColor,
 }: ButtonProps) {
   const variantClasses = {
     primary: 'bg-primary text-white',
@@ -27,6 +31,7 @@ export default function Button({
       onClick={onClick}
       disabled={disabled}
       className={`py-2 px-4 ${variantClasses[variant]} hover:bg-primary/80 rounded cursor-pointer font-semibold flex-1 transition-all duration-300 ease-in-out w-full hover:border-opacity-100 ${className}`}
+      style={{ backgroundColor: bgColor, color: textColor }}
     >
       {children}
     </button>
