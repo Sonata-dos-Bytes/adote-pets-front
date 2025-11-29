@@ -199,7 +199,7 @@ export default function PetRegistration() {
                                     placeholder="Pretinha..."
                                     value={form.name}
                                     onChange={(e) => update('name', e.target.value)}
-                                    className="w-full border rounded px-3 py-2"
+                                    className="w-full border-1 font-semibold border-[#cbcbcb] rounded-lg px-3 py-2"
                                 />
                                 {errors.name && <p className="text-red-600 text-sm mt-1">{errors.name}</p>}
                             </div>
@@ -211,7 +211,7 @@ export default function PetRegistration() {
                                     placeholder="Cachorro..."
                                     value={form.species}
                                     onChange={(e) => update('species', e.target.value)}
-                                    className="w-full border rounded px-3 py-2"
+                                    className="w-full border-1 font-semibold border-[#cbcbcb] rounded-lg px-3 py-2"
                                 />
                                 {errors.species && <p className="text-red-600 text-sm mt-1">{errors.species}</p>}
                             </div>
@@ -224,7 +224,7 @@ export default function PetRegistration() {
                                     placeholder="0"
                                     value={form.age}
                                     onChange={(e) => update('age', e.target.value)}
-                                    className="w-full border rounded px-3 py-2"
+                                    className="w-full border-1 font-semibold border-[#cbcbcb] rounded-lg px-3 py-2"
                                 />
                                 {errors.age && <p className="text-red-600 text-sm mt-1">{errors.age}</p>}
                                 <p className="text-gray-500 text-xs mt-1">Se o seu animal de estimação for um filhote, adicione idade dele como 0.</p>
@@ -238,7 +238,7 @@ export default function PetRegistration() {
                                 placeholder="Labrador..."
                                 value={form.breed}
                                 onChange={(e) => update('breed', e.target.value)}
-                                className="w-full border rounded px-3 py-2"
+                                className="w-full border-1 font-semibold border-[#cbcbcb] rounded-lg px-3 py-2"
                             />
                             {errors.breed && <p className="text-red-600 text-sm mt-1">{errors.breed}</p>}
                         </div>
@@ -249,7 +249,7 @@ export default function PetRegistration() {
                                 <select
                                     value={form.gender}
                                     onChange={(e) => update('gender', e.target.value)}
-                                    className="w-full border rounded px-3 py-2"
+                                    className="w-full border-1 font-semibold font-[#cbcbcb] border-[#cbcbcb] rounded-lg px-3 py-2"
                                 >
                                     <option value="">Selecione</option>
                                     <option value="macho">Macho</option>
@@ -265,7 +265,7 @@ export default function PetRegistration() {
                                     placeholder="Preto, caramelo..."
                                     value={form.color}
                                     onChange={(e) => update('color', e.target.value)}
-                                    className="w-full border rounded px-3 py-2"
+                                    className="w-full border-1 font-semibold border-[#cbcbcb] rounded-lg px-3 py-2"
                                 />
                                 {errors.color && <p className="text-red-600 text-sm mt-1">{errors.color}</p>}
                             </div>
@@ -277,7 +277,7 @@ export default function PetRegistration() {
                                 <select
                                     value={form.city}
                                     onChange={(e) => update('city', e.target.value)}
-                                    className="w-full border rounded px-3 py-2"
+                                    className="w-full border-1 font-semibold border-[#cbcbcb] rounded-lg px-3 py-2"
                                 >
                                     <option value="">Selecione a cidade</option>
                                     <option value="balsas">Balsas, Maranhão</option>
@@ -291,11 +291,10 @@ export default function PetRegistration() {
                                 <select
                                     value={form.state}
                                     onChange={(e) => update('state', e.target.value)}
-                                    className="w-full border rounded px-3 py-2"
+                                    className="w-full border-1 font-semibold border-[#cbcbcb] rounded-lg px-3 py-2"
                                 >
                                     <option value="">Selecione o estado</option>
-                                    <option value="Pará">Pará</option>
-                                    <option value="Bahia">Bahia</option>
+                                    <option value="Maranhão">Maranhão</option>
                                 </select>
                                 {errors.state && <p className="text-red-600 text-sm mt-1">{errors.state}</p>}
                             </div>
@@ -304,20 +303,20 @@ export default function PetRegistration() {
                                 <label className="block text-base font-bold mb-1">UF (Sigla) *</label>
                                 <input
                                     type="text"
-                                    placeholder="PA"
+                                    placeholder="MA"
                                     maxLength={2}
                                     value={form.uf}
                                     onChange={(e) => update('uf', e.target.value.toUpperCase())}
-                                    className="w-full border rounded px-3 py-2"
+                                    className="w-full border-1 font-semibold border-[#cbcbcb] rounded-lg px-3 py-2"
                                 />
                                 {errors.uf && <p className="text-red-600 text-sm mt-1">{errors.uf}</p>}
                             </div>
                         </div>
 
-                        <div className="flex gap-6 items-center">
+                        <div className="flex gap-6 mt-12 items-center">
                             <p className="block text-base font-bold">Seu animal de estimação é castrado ou esterilizado? *</p>
                             <div className="flex items-center gap-6">
-                                <label className="inline-flex items-center">
+                                <label className="inline-flex items-center font-bold text-[#606060]">
                                     <input
                                         type="radio"
                                         name="sterilized"
@@ -328,7 +327,7 @@ export default function PetRegistration() {
                                     />
                                     Sim
                                 </label>
-                                <label className="inline-flex items-center">
+                                <label className="inline-flex items-center font-bold text-[#606060]">
                                     <input
                                         type="radio"
                                         name="sterilized"
