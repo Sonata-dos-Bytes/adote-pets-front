@@ -43,7 +43,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </head>
       <body className='flex flex-col min-h-[100vh] '>
         <AuthProvider>
-          <ToastContainer position='bottom-right' />
+          <ToastContainer position='bottom-right' className='!z-[99999]' />
           <Header />
           {children}
           <Footer />

@@ -1,4 +1,4 @@
-export interface User {
+export interface IUser {
   externalId: string;
   createdAt: string;
   updatedAt: string;

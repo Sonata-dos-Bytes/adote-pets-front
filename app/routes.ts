@@ -7,5 +7,4 @@ export default [
   { path: '/guides', file: 'routes/guides.tsx' },
   { path: '/about', file: 'routes/about.tsx' },
   { path: '/painel', file: 'routes/dashboard.tsx' },
-  { path: '/perfil', file: 'routes/profile.tsx' },
 ] satisfies RouteConfig;
