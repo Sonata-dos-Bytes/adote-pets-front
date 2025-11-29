@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import Button from '~/components/ui/button/button';
+import Button from '../../components/ui/button/button';
 import { useNavigate } from 'react-router';
-import { Icon } from '@iconify/react';
+import { registerPet } from '../../services/pet-services';
+import { useAuth } from '../../contexts/auth-context';
 
 export default function PetRegistration() {
     const [step, setStep] = useState<number>(1);
     const navigate = useNavigate();
+    const { isAuthenticated, token } = useAuth();
 
     const [form, setForm] = useState({
         name: '',
@@ -15,23 +17,31 @@ export default function PetRegistration() {
         gender: '',
         color: '',
         city: '',
+        state: '',
+        uf: '',
         sterilized: '' as 'yes' | 'no' | '',
         story: '',
     });
 
     const [errors, setErrors] = useState<Record<string, string>>({});
+    const [globalError, setGlobalError] = useState<string | null>(null);
+    const [submitting, setSubmitting] = useState(false);
 
     const [images, setImages] = useState(
         Array.from({ length: 4 }).map(() => ({ file: null as File | null, preview: '' as string | null, error: '' }))
     );
 
     React.useEffect(() => {
+        if (!isAuthenticated) {
+            navigate('/');
+        }
+
         return () => {
             images.forEach((img) => {
                 if (img.preview) URL.revokeObjectURL(img.preview);
             });
         };
-    }, []);
+    }, [isAuthenticated, navigate]);
 
     function handleImageChange(index: number, file?: File | null) {
         const allowed = ['image/jpeg', 'image/png', 'image/jpg'];
@@ -68,7 +78,6 @@ export default function PetRegistration() {
             } else {
                 setImages((prev) => {
                     const next = [...prev];
-                    // revoke previous preview if any
                     if (next[index].preview) URL.revokeObjectURL(next[index].preview as string);
                     next[index] = { file, preview: url, error: '' };
                     return next;
@@ -102,6 +111,8 @@ export default function PetRegistration() {
         if (!form.gender) nextErrors.gender = 'Gênero é obrigatório.';
         if (!form.color.trim()) nextErrors.color = 'Cor é obrigatória.';
         if (!form.city) nextErrors.city = 'Cidade do dono é obrigatória.';
+        if (!form.state.trim()) nextErrors.state = 'Estado é obrigatório.';
+        if (!form.uf.trim() || form.uf.length !== 2) nextErrors.uf = 'UF deve ter 2 caracteres.';
         if (!form.sterilized) nextErrors.sterilized = 'Campo obrigatório.';
 
         setErrors(nextErrors);
@@ -112,9 +123,69 @@ export default function PetRegistration() {
         if (validateStep1()) setStep(2);
     }
 
+    async function submitPet() {
+        try {
+            setSubmitting(true);
+            setGlobalError(null);
+
+            const filesArray = images
+                .map((img) => img.file)
+                .filter((f): f is File => f !== null);
+
+            if (filesArray.length === 0) {
+                setGlobalError('Selecione ao menos uma imagem');
+                return;
+            }
+
+            const ageInYears = parseInt(form.age);
+            const birthYear = new Date().getFullYear() - ageInYears;
+            const birthDay = `${birthYear}-01-01`;
+
+            const genderMap: Record<string, 'male' | 'female'> = {
+                'macho': 'male',
+                'femea': 'female',
+            };
+
+            const payload = {
+                name: form.name.trim(),
+                species: form.species.trim(),
+                breed: form.breed.trim(),
+                gender: genderMap[form.gender] || (form.gender as 'male' | 'female'),
+                color: form.color.trim(),
+                city: form.city,
+                state: form.state.trim(),
+                uf: form.uf.trim().toUpperCase(),
+                birthDay,
+                isCastrated: form.sterilized === 'yes',
+                isAdote: true,
+                lore: form.story.trim(),
+                files: filesArray,
+            };
+
+            if (!token) {
+                setGlobalError('Usuário não autenticado.');
+                return;
+            }
+
+            await registerPet(token, payload);
+            setStep(4);
+        } catch (err: any) {
+            console.error('Erro ao registrar pet:', err);
+            setGlobalError(err.message || 'Erro ao enviar pet. Tente novamente.');
+        } finally {
+            setSubmitting(false);
+        }
+    }
+
     return (
         <main className="flex flex-col items-center justify-center">
             <div className="w-full max-w-7xl p-10">
+
+                {globalError && (
+                    <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+                        {globalError}
+                    </div>
+                )}
 
                 {step === 1 && (
                     <form className="space-y-4" onSubmit={(e) => { e.preventDefault(); onContinueFromStep1(); }}>
@@ -200,19 +271,47 @@ export default function PetRegistration() {
                             </div>
                         </div>
 
-                        <div>
-                            <label className="block text-base font-bold mb-1">Cidade do Dono *</label>
-                            <select
-                                value={form.city}
-                                onChange={(e) => update('city', e.target.value)}
-                                className="w-full border rounded px-3 py-2"
-                            >
-                                <option value="">Selecione a cidade</option>
-                                <option value="Belém">Belém</option>
-                                <option value="Santarém">Santarém</option>
-                                <option value="Salvador">Salvador</option>
-                            </select>
-                            {errors.city && <p className="text-red-600 text-sm mt-1">{errors.city}</p>}
+                        <div className="grid grid-cols-3 gap-4">
+                            <div>
+                                <label className="block text-base font-bold mb-1">Cidade do Dono *</label>
+                                <select
+                                    value={form.city}
+                                    onChange={(e) => update('city', e.target.value)}
+                                    className="w-full border rounded px-3 py-2"
+                                >
+                                    <option value="">Selecione a cidade</option>
+                                    <option value="balsas">Balsas, Maranhão</option>
+                                    <option value="mangabeiras">S. R. Mangabeiras, Maranhão</option>
+                                </select>
+                                {errors.city && <p className="text-red-600 text-sm mt-1">{errors.city}</p>}
+                            </div>
+
+                            <div>
+                                <label className="block text-base font-bold mb-1">Estado *</label>
+                                <select
+                                    value={form.state}
+                                    onChange={(e) => update('state', e.target.value)}
+                                    className="w-full border rounded px-3 py-2"
+                                >
+                                    <option value="">Selecione o estado</option>
+                                    <option value="Pará">Pará</option>
+                                    <option value="Bahia">Bahia</option>
+                                </select>
+                                {errors.state && <p className="text-red-600 text-sm mt-1">{errors.state}</p>}
+                            </div>
+
+                            <div>
+                                <label className="block text-base font-bold mb-1">UF (Sigla) *</label>
+                                <input
+                                    type="text"
+                                    placeholder="PA"
+                                    maxLength={2}
+                                    value={form.uf}
+                                    onChange={(e) => update('uf', e.target.value.toUpperCase())}
+                                    className="w-full border rounded px-3 py-2"
+                                />
+                                {errors.uf && <p className="text-red-600 text-sm mt-1">{errors.uf}</p>}
+                            </div>
                         </div>
 
                         <div className="flex gap-6 items-center">
@@ -322,7 +421,9 @@ export default function PetRegistration() {
                             {step === 2 ? (
                                 <Button bgColor="#F57B42" textColor="#fff" onClick={() => setStep(3)}>Continuar</Button>
                             ) : (
-                                <Button bgColor="#F57B42" textColor="#fff" onClick={() => setStep(4)}>Enviar</Button>
+                                <Button bgColor="#F57B42" textColor="#fff" onClick={submitPet} disabled={submitting}>
+                                    {submitting ? 'Enviando...' : 'Enviar'}
+                                </Button>
                             )}
                         </div>
                     </div>
