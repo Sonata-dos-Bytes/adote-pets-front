@@ -3,12 +3,25 @@ import { getInitials } from '@/utils';
 import { Home, LogOut, User } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
+import { fetchUserProfile } from '@/services/user-services';
 
 export default function UserMenu() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const { user, signOut } = useAuth();
+  const [userAvatar, setUserAvatar] = useState<string | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const loadUserProfile = async () => {
+      const profile = await fetchUserProfile();
+      if (profile?.avatar) {
+        setUserAvatar(profile.avatar);
+      }
+    };
+
+    loadUserProfile();
+  }, []);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -44,7 +57,13 @@ export default function UserMenu() {
         className='flex items-center gap-2 hover:opacity-80 transition-opacity'
         aria-label='Menu do usuário'
       >
-        {user.avatar ? (
+        {userAvatar ? (
+          <img
+            src={userAvatar}
+            alt={user.name}
+            className='w-10 h-10 rounded-full object-cover border-2 border-primary'
+          />
+        ) : user.avatar ? (
           <img
             src={user.avatar}
             alt={user.name}
@@ -56,9 +75,8 @@ export default function UserMenu() {
           </div>
         )}
         <svg
-          className={`w-4 h-4 text-gray-600 transition-transform duration-200 ${
-            dropdownOpen ? 'rotate-180' : ''
-          }`}
+          className={`w-4 h-4 text-gray-600 transition-transform duration-200 ${dropdownOpen ? 'rotate-180' : ''
+            }`}
           fill='none'
           stroke='currentColor'
           viewBox='0 0 24 24'
