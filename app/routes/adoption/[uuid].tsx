@@ -1,17 +1,5 @@
-import AdoptionSpecific from '@/pages/adoption-listing/[uuid]/page';
-import type { Route } from '../+types/home';
+import AdoptionSpecificPage from '@/pages/adoption-list/[uuid]/page';
 
-export function meta({}: Route.MetaArgs) {
-  return [
-    { title: 'Detalhes da Adoção' },
-    {
-      name: 'description',
-      content:
-        'Veja informações detalhadas sobre o animal disponível para adoção.',
-    },
-  ];
-}
-
-export default function AdoptionSpecificPage() {
-  return <AdoptionSpecific />;
+export default function AdoptionSpecificRoute() {
+  return <AdoptionSpecificPage />;
 }

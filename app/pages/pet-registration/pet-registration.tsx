@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router';
 import { registerPet } from '../../services/pet-services';
 import { useAuth } from '../../contexts/auth-context';
 
-export default function PetRegistration() {
+export default function PetRegistrationPage() {
     const [step, setStep] = useState<number>(1);
     const navigate = useNavigate();
     const { isAuthenticated, token } = useAuth();

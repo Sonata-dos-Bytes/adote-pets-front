@@ -1,9 +1,5 @@
-import PetRegistration from '../pages/pet-registration/pet-registration';
-
-export function meta() {
-    return [{ title: 'Cadastro de Pet' }];
-}
+import PetRegistrationPage from '../pages/pet-registration/pet-registration';
 
 export default function PetRegistrationRoute() {
-    return <PetRegistration />;
+    return <PetRegistrationPage />;
 }

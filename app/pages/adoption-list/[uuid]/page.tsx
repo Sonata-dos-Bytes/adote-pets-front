@@ -13,7 +13,7 @@ import { Clock, PawPrint, Venus } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 
-export default function AdoptionSpecific() {
+export default function AdoptionSpecificPage() {
   const { uuid } = useParams<{ uuid: string }>();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);

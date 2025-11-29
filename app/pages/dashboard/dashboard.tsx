@@ -13,7 +13,7 @@ import { calculateAge, getPetImage } from '@/utils';
 import React from 'react';
 import { toast } from 'react-toastify';
 
-export default function Dashboard() {
+export default function DashboardPage() {
   const { user } = useAuth();
   const [myRequests, setMyRequests] = React.useState<IAdoptionRequest[]>([]);
   const [petsWithRequests, setPetsWithRequests] = React.useState<

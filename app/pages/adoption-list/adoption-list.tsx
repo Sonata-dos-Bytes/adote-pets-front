@@ -7,7 +7,7 @@ import type { IMeta } from '@/types/IMeta';
 import type { IApiResponse } from '@/types/IApiResponse';
 import { getPets } from '@/services/pet-services';
 
-export function AdoptionList() {
+export function AdoptionListPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [pets, setPets] = useState<IPet[]>([]);

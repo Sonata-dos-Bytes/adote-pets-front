@@ -1,21 +1,10 @@
-import Dashboard from '@/pages/dashboard/dashboard';
-import type { Route } from './+types/dashboard';
+import DashboardPage from '@/pages/dashboard/dashboard';
 
 import { useAuth } from '@/contexts/auth-context';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
 
-export function meta({}: Route.MetaArgs) {
-  return [
-    { title: 'Painel - Adote Pets' },
-    {
-      name: 'description',
-      content: 'Gerencie seus pets e adoções na Adote Pets.',
-    },
-  ];
-}
-
-export default function DashboardPage() {
+export default function DashboardRoute() {
   const { isAuthenticated, user, isLoading } = useAuth();
   const navigate = useNavigate();
 
@@ -29,5 +18,5 @@ export default function DashboardPage() {
     return null;
   }
 
-  return <Dashboard />;
+  return <DashboardPage />;
 }
