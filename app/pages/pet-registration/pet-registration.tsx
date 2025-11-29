@@ -35,8 +35,6 @@ export default function PetRegistration() {
 
     function handleImageChange(index: number, file?: File | null) {
         const allowed = ['image/jpeg', 'image/png', 'image/jpg'];
-        const minSize = 240 * 1024; // 240KB
-        const maxSize = 1024 * 1024; // 1024KB
 
         if (!file) {
             setImages((prev) => {
@@ -57,23 +55,14 @@ export default function PetRegistration() {
             return;
         }
 
-        if (file.size < minSize || file.size > maxSize) {
-            setImages((prev) => {
-                const next = [...prev];
-                next[index] = { file: null, preview: null, error: 'Tamanho inválido. Deve ficar entre 240KB e 1024KB.' };
-                return next;
-            });
-            return;
-        }
-
         const url = URL.createObjectURL(file);
         const imgEl = new Image();
         imgEl.onload = () => {
-            if (imgEl.width !== 600 || imgEl.height !== 600) {
+            if (imgEl.width !== 808 || imgEl.height !== 414) {
                 URL.revokeObjectURL(url);
                 setImages((prev) => {
                     const next = [...prev];
-                    next[index] = { file: null, preview: null, error: 'Dimensões inválidas. Deve ser 600x600.' };
+                    next[index] = { file: null, preview: null, error: 'Dimensões inválidas. Deve ser 808x414.' };
                     return next;
                 });
             } else {
@@ -266,13 +255,12 @@ export default function PetRegistration() {
                 {step === 2 && (
                     <div className="space-y-4">
                         <h3 className="text-4xl font-extrabold mb-12 text-left">Imagens</h3>
-                        <p className="text-sm text-gray-600">O formato da imagem deve (.jpg, .png, .jpeg).</p>
-                        <p className="text-sm text-gray-600">As medidas da imagem devem ser quadradas, com dimensões de 600 x 600 pixels.</p>
-                        <p className="text-sm text-gray-600">O tamanho máximo e mínimo da imagem é 1024 e 240KB.</p>
+                        <p className="text-base font-bold text-black">O formato da imagem deve (.jpg, .png, .jpeg).</p>
+                        <p className="text-base font-bold text-black">As medidas da imagem devem ser 808 x 414 pixels.</p>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             {images.map((img, idx) => (
-                                <label key={idx} className="flex items-center justify-center border-2 border-dashed rounded-md p-2 bg-gray-50 cursor-pointer overflow-hidden" style={{ minHeight: 296 }}>
+                                <label key={idx} className="flex items-center justify-center border-2 border-dashed rounded-2xl bg-gray-50 cursor-pointer overflow-hidden" style={{ minHeight: 296 }}>
                                     <input
                                         type="file"
                                         accept="image/png, image/jpeg, image/jpg"
@@ -284,8 +272,9 @@ export default function PetRegistration() {
                                             <img src={img.preview as string} alt={`preview-${idx}`} className="object-cover w-full h-full" />
                                         ) : (
                                             <div className="flex flex-col items-center justify-center text-gray-400">
-                                                <Icon icon="ph:camera-light" width="48" height="48" />
-                                                <span className="text-sm mt-2">Adicionar imagem</span>
+                                                <svg width="62" height="56" viewBox="0 0 62 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M56 13.3333H47.5467L42.6667 8H26.6667V13.3333H40.32L45.2 18.6667H56V50.6667H13.3333V26.6667H8V50.6667C8 53.6 10.4 56 13.3333 56H56C58.9333 56 61.3333 53.6 61.3333 50.6667V18.6667C61.3333 15.7333 58.9333 13.3333 56 13.3333ZM21.3333 34.6667C21.3333 42.0267 27.3067 48 34.6667 48C42.0267 48 48 42.0267 48 34.6667C48 27.3067 42.0267 21.3333 34.6667 21.3333C27.3067 21.3333 21.3333 27.3067 21.3333 34.6667ZM34.6667 26.6667C39.0667 26.6667 42.6667 30.2667 42.6667 34.6667C42.6667 39.0667 39.0667 42.6667 34.6667 42.6667C30.2667 42.6667 26.6667 39.0667 26.6667 34.6667C26.6667 30.2667 30.2667 26.6667 34.6667 26.6667ZM13.3333 13.3333H21.3333V8H13.3333V0H8V8H0V13.3333H8V21.3333H13.3333V13.3333Z" fill="#868686" />
+                                                </svg>
                                             </div>
                                         )}
 
@@ -300,8 +289,8 @@ export default function PetRegistration() {
                 {step === 3 && (
                     <div className="space-y-4">
                         <h3 className="text-4xl font-extrabold mb-12 text-left">História</h3>
-                        <p className="text-sm text-gray-600">Compartilhe aqui qualquer coisa sobre seu animal de estimação. (O perfil do seu animal de estimação ficará visível ao público. Para sua segurança, não inclua dados pessoais ou informações de contato.) Inclua informações como:</p>
-                        <ul className="list-disc list-inside text-sm text-gray-600 space-y-1">
+                        <p className="text-base text-black font-bold">Compartilhe aqui qualquer coisa sobre seu animal de estimação. (O perfil do seu animal de estimação ficará visível ao público. Para sua segurança, não inclua dados pessoais ou informações de contato.) Inclua informações como:</p>
+                        <ul className="list-disc list-inside text-base font-bold text-black space-y-1">
                             <li>Histórico do seu animal de estimação: há quanto tempo você o tem, de onde o adquiriu e por que precisa de um novo lar para ele.</li>
                             <li>Detalhes sobre com quem seu animal de estimação conviveu, por exemplo, crianças e outros animais de estimação.</li>
                             <li>Atividades favoritas do seu animal de estimação.</li>
@@ -313,12 +302,11 @@ export default function PetRegistration() {
                         </ul>
 
                         <div>
-                            <label className="block text-sm font-medium mb-2">Descrição</label>
                             <textarea
                                 placeholder="Escreva aqui..."
                                 value={form.story}
                                 onChange={(e) => update('story', e.target.value)}
-                                className="w-full border rounded px-3 py-2"
+                                className="w-full border border-[#cbcbcb] text-base font-bold rounded-lg px-3 py-2"
                                 style={{ height: 212 }}
                             />
                         </div>
