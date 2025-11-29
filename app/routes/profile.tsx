@@ -123,17 +123,21 @@ export default function ProfilePage() {
                 throw new Error('Nenhuma alteração foi feita');
             }
 
-            const response = await updateUserProfile(payload);
+            const success = await updateUserProfile(payload);
 
-            if (response) {
-                setUserData(response);
-                handleCloseEditModal();
-                alert('Perfil atualizado com sucesso!');
-            } else {
-                throw new Error('Erro ao atualizar perfil');
+            if (success) {
+                const updatedProfile = await fetchUserProfile();
+                if (updatedProfile) {
+                    setUserData(updatedProfile);
+                    handleCloseEditModal();
+                    alert('Perfil atualizado com sucesso!');
+                } else {
+                    throw new Error('Não foi possível carregar os dados atualizados');
+                }
             }
         } catch (err: any) {
             setEditError(err.message || 'Erro ao atualizar perfil');
+            console.error('Erro completo:', err);
         } finally {
             setIsSubmittingEdit(false);
         }
