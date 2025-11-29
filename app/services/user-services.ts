@@ -21,7 +21,7 @@ export interface UserResponse {
 
 export const fetchUserProfile = async (): Promise<UserData | null> => {
   try {
-    const response = (await apiFetch('GET', '/auth/me')) as UserResponse;
+    const response = (await apiFetch('GET', '/me')) as UserResponse;
     
     if (response?.status && response?.data?.user) {
       return response.data.user;

@@ -48,9 +48,10 @@ export async function getAuthToken(): Promise<string | undefined> {
 export async function apiFetch(
   method: 'GET' | 'POST' | 'PUT' | 'DELETE',
   url: string,
-  params: Record<string, string> = {},
   body: unknown = null,
+  params: Record<string, string> = {},
   headers: Record<string, string> = {},
+  isAuthRequired = true,
 ): Promise<unknown> {
   const token = await getAuthToken();
 
@@ -85,7 +86,7 @@ export async function apiFetch(
 
   try {
     const fallbackEnv = import.meta.env.VITE_API_URL;
-    const response = await fetch(fallbackEnv + url, options);
+    const response = await fetch(fallbackEnv + (isAuthRequired ? "/auth" : "") + url, options);
 
     if (!response.ok) {
       const errorData: { message?: string } = await response.json();

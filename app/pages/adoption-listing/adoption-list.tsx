@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react';
 import PetFilters from '@/components/filters/filters';
 import PetProfileCard from '@/components/pet-profile-card/pet-profile-card';
 import type { IPet } from '@/types/IPet';
-import { getPets } from '@/services/pet-service';
 import type { IQuery } from '@/types/IQuery';
 import type { IMeta } from '@/types/IMeta';
 import type { IApiResponse } from '@/types/IApiResponse';
+import { getPets } from '@/services/pet-services';
 
 export function AdoptionList() {
   const [loading, setLoading] = useState(false);

@@ -3,7 +3,7 @@ import type { IPet } from "@/types/IPet"
 interface PetInfoProps {
   pet: IPet
 }
-export default function PetInfo({ pet }: { pet: IPet }) {
+export default function PetInfo({ pet }: PetInfoProps) {
   return (
     <div className="flex items-center gap-3 mt-6">
       <img

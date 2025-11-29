@@ -1,16 +1,17 @@
+import CardWithButton from '@/components/card-with-button/card-with-button';
+import Gallery from '@/components/gallery/gallery';
+import HistoryCard from '@/components/history-card/history-card';
+import LocationInfo from '@/components/location-info/location-info';
+import PetAttributeCard from '@/components/pet-attribute-card/pet-attribute-card';
+import PetInfo from '@/components/pet-info/pet-info';
+import { getPetByUuid } from '@/services/pet-services';
+
+import type { IApiResponse } from '@/types/IApiResponse';
+import type { IPet } from '@/types/IPet';
+import { calculateAge, formatGender } from '@/utils/formatted-data';
 import { Clock, PawPrint, Venus } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
-import CardWithButton from '~/components/card-with-button/card-with-button';
-import Gallery from '~/components/gallery/gallery';
-import HistoryCard from '~/components/history-card/history-card';
-import LocationInfo from '~/components/location-info/location-info';
-import PetAttributeCard from '~/components/pet-attribute-card/pet-attribute-card';
-import PetInfo from '~/components/pet-info/pet-info';
-import { getPetByUuid, getPets } from '~/services/pet-service';
-import type { IApiResponse } from '~/types/IApiResponse';
-import type { IPet } from '~/types/IPet';
-import { calculateAge, formatGender } from '~/utils/formatted-data';
 
 export default function AdoptionSpecific() {
   const { uuid } = useParams<{ uuid: string }>();

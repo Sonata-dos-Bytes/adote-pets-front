@@ -8,7 +8,7 @@ interface ButtonProps {
   onClick?: () => void;
 }
 
-export default function Button({ children, type = 'button', onClick, variant = 'primary' }: ButtonProps) {
+export default function Button({ children, type = 'button', onClick, variant = 'primary'}: ButtonProps) {
   const base = 'w-full border border-gray-300 rounded-lg px-4 py-3 font-semibold text-sm transition-colors duration-200';
   const variantClasses =
     variant === 'primary'

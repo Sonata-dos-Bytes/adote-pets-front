@@ -1,5 +1,5 @@
+import type { IFile } from '@/types/IFile';
 import React, { useState } from 'react';
-import type { IFile } from '~/types/IFile';
 
 interface GalleryProps {
   images: IFile[];

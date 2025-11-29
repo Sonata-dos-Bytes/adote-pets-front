@@ -4,7 +4,7 @@ import { handleApiError } from '@/utils/handle-api-fetch-error';
 
 export const registerUser = async (data: SignUp) => {
   try {
-    const response: any = await apiFetch('POST', '/auth/register', data);
+    const response: any = await apiFetch('POST', '/register', data);
     return response.data;
   } catch (error) {
     handleApiError(error, 'Falha ao registrar usuário.');
@@ -12,8 +12,9 @@ export const registerUser = async (data: SignUp) => {
 };
 
 export const loginUser = async (data: SignIn) => {
+  console.log('Dados de login enviados:', data);
   try {
-    const response = await apiFetch('POST', '/auth/login', data);
+    const response = await apiFetch('POST', '/login', data);
     return response;
   } catch (error) {
     handleApiError(error, 'Falha ao realizar login.');
