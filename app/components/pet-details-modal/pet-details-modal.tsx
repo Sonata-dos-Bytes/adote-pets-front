@@ -45,6 +45,13 @@ export function PetDetailsModal({
     });
     const [localImages, setLocalImages] = useState(pet.files);
 
+    const [states, setStates] = useState<
+        Array<{ id: number; nome: string; sigla: string }>
+    >([]);
+    const [cities, setCities] = useState<string[]>([]);
+    const [loadingStates, setLoadingStates] = useState(false);
+    const [loadingCities, setLoadingCities] = useState(false);
+
     React.useEffect(() => {
         setEditedPet({
             ...pet,
@@ -52,6 +59,50 @@ export function PetDetailsModal({
         });
         setLocalImages(pet.files);
     }, [pet]);
+
+    React.useEffect(() => {
+        (async () => {
+            try {
+                setLoadingStates(true);
+                const res = await fetch(
+                    'https://servicodados.ibge.gov.br/api/v1/localidades/estados',
+                );
+                const data = await res.json();
+                data.sort((a: any, b: any) => a.nome.localeCompare(b.nome));
+                setStates(data);
+            } catch (err) {
+                console.error('Erro ao buscar estados:', err);
+            } finally {
+                setLoadingStates(false);
+            }
+        })();
+    }, []);
+
+    React.useEffect(() => {
+        if (pet.uf && states.length > 0) {
+            const stateObj = states.find((s) => s.sigla === pet.uf);
+            if (stateObj) {
+                (async () => {
+                    try {
+                        setLoadingCities(true);
+                        const res = await fetch(
+                            `https://servicodados.ibge.gov.br/api/v1/localidades/estados/${stateObj.id}/municipios`,
+                        );
+                        const data = await res.json();
+                        const names = data
+                            .map((c: any) => c.nome)
+                            .sort((a: string, b: string) => a.localeCompare(b));
+                        setCities(names);
+                    } catch (err) {
+                        console.error('Erro ao buscar cidades:', err);
+                        setCities([]);
+                    } finally {
+                        setLoadingCities(false);
+                    }
+                })();
+            }
+        }
+    }, [pet.uf, states]);
 
     const handleInputChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -63,6 +114,37 @@ export function PetDetailsModal({
             setEditedPet((prev) => ({ ...prev, [name]: checked }));
         } else {
             setEditedPet((prev) => ({ ...prev, [name]: value }));
+        }
+    };
+
+    const handleStateChange = async (stateIdOrSigla: string) => {
+        const stateObj = states.find(
+            (s) => s.sigla === stateIdOrSigla || String(s.id) === stateIdOrSigla,
+        );
+        if (!stateObj) return;
+
+        setEditedPet((prev) => ({
+            ...prev,
+            state: stateObj.nome,
+            uf: stateObj.sigla,
+            city: '', 
+        }));
+
+        try {
+            setLoadingCities(true);
+            const res = await fetch(
+                `https://servicodados.ibge.gov.br/api/v1/localidades/estados/${stateObj.id}/municipios`,
+            );
+            const data = await res.json();
+            const names = data
+                .map((c: any) => c.nome)
+                .sort((a: string, b: string) => a.localeCompare(b));
+            setCities(names);
+        } catch (err) {
+            console.error('Erro ao buscar cidades:', err);
+            setCities([]);
+        } finally {
+            setLoadingCities(false);
         }
     };
 
@@ -365,35 +447,56 @@ export function PetDetailsModal({
 
                         <div>
                             <label className='block text-sm font-semibold text-gray-700 mb-2'>
-                                Cidade
+                                Estado
                             </label>
                             {isEditMode ? (
-                                <input
-                                    type='text'
-                                    name='city'
-                                    value={editedPet.city}
-                                    onChange={handleInputChange}
+                                <select
+                                    name='uf'
+                                    value={editedPet.uf}
+                                    onChange={(e) => handleStateChange(e.target.value)}
                                     className='w-full px-4 py-2 border-2 border-gray-200 rounded-xl focus:border-orange-400 focus:outline-none'
-                                />
+                                >
+                                    <option value=''>
+                                        {loadingStates ? 'Carregando estados...' : 'Selecione o estado'}
+                                    </option>
+                                    {states.map((state) => (
+                                        <option key={state.id} value={state.sigla}>
+                                            {state.nome} ({state.sigla})
+                                        </option>
+                                    ))}
+                                </select>
                             ) : (
-                                <p className='text-gray-800 text-lg font-bold'>{pet.city}</p>
+                                <p className='text-gray-800 text-lg font-bold'>{pet.state}</p>
                             )}
                         </div>
 
                         <div>
                             <label className='block text-sm font-semibold text-gray-700 mb-2'>
-                                Estado
+                                Cidade
                             </label>
                             {isEditMode ? (
-                                <input
-                                    type='text'
-                                    name='state'
-                                    value={editedPet.state}
+                                <select
+                                    name='city'
+                                    value={editedPet.city}
                                     onChange={handleInputChange}
                                     className='w-full px-4 py-2 border-2 border-gray-200 rounded-xl focus:border-orange-400 focus:outline-none'
-                                />
+                                    disabled={!editedPet.uf || loadingCities}
+                                >
+                                    <option value=''>
+                                        {loadingCities
+                                            ? 'Carregando cidades...'
+                                            : !editedPet.uf
+                                                ? 'Selecione um estado primeiro'
+                                                : 'Selecione a cidade'}
+                                    </option>
+                                    {cities.map((city) => (
+                                        <option key={city} value={city}>
+                                            {city}
+                                        </option>
+                                    ))}
+                                </select>
                             ) : (
-                                <p className='text-gray-800 text-lg font-bold'>{pet.state}</p>
+                                <p className='text-gray-800 text-lg font-bold'>{pet.city}</p>
                             )}
                         </div>
 
@@ -406,16 +509,14 @@ export function PetDetailsModal({
                                     type='text'
                                     name='uf'
                                     value={editedPet.uf}
-                                    onChange={handleInputChange}
+                                    readOnly
                                     maxLength={2}
-                                    className='w-full px-4 py-2 border-2 border-gray-200 rounded-xl focus:border-orange-400 focus:outline-none'
+                                    className='w-full px-4 py-2 border-2 border-gray-200 rounded-xl focus:border-orange-400 focus:outline-none bg-gray-100 cursor-not-allowed'
                                 />
                             ) : (
                                 <p className='text-gray-800 text-lg font-bold'>{pet.uf}</p>
                             )}
-                        </div>
-
-                        <div className='flex items-center gap-4'>
+                        </div>                        <div className='flex items-center gap-4'>
                             <label className='flex items-center gap-2 cursor-pointer'>
                                 {isEditMode ? (
                                     <>

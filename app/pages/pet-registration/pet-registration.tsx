@@ -31,6 +31,13 @@ export default function PetRegistrationPage() {
         Array.from({ length: 4 }).map(() => ({ file: null as File | null, preview: '' as string | null, error: '' }))
     );
 
+    const [states, setStates] = useState<
+        Array<{ id: number; nome: string; sigla: string }>
+    >([]);
+    const [cities, setCities] = useState<string[]>([]);
+    const [loadingStates, setLoadingStates] = useState(false);
+    const [loadingCities, setLoadingCities] = useState(false);
+
     React.useEffect(() => {
         if (!isAuthenticated) {
             navigate('/');
@@ -42,6 +49,24 @@ export default function PetRegistrationPage() {
             });
         };
     }, [isAuthenticated, navigate]);
+
+    React.useEffect(() => {
+        (async () => {
+            try {
+                setLoadingStates(true);
+                const res = await fetch(
+                    'https://servicodados.ibge.gov.br/api/v1/localidades/estados',
+                );
+                const data = await res.json();
+                data.sort((a: any, b: any) => a.nome.localeCompare(b.nome));
+                setStates(data);
+            } catch (err) {
+                console.error('Erro ao buscar estados:', err);
+            } finally {
+                setLoadingStates(false);
+            }
+        })();
+    }, []);
 
     function handleImageChange(index: number, file?: File | null) {
         const allowed = ['image/jpeg', 'image/png', 'image/jpg'];
@@ -91,6 +116,34 @@ export default function PetRegistrationPage() {
         setForm((s) => ({ ...s, [key]: value }));
         setErrors((e) => ({ ...e, [key]: '' }));
     }
+
+    const handleStateChange = async (stateIdOrSigla: string) => {
+        const stateObj = states.find(
+            (s) => s.sigla === stateIdOrSigla || String(s.id) === stateIdOrSigla,
+        );
+        if (!stateObj) return;
+
+        update('state', stateObj.nome);
+        update('uf', stateObj.sigla);
+        update('city', ''); 
+
+        try {
+            setLoadingCities(true);
+            const res = await fetch(
+                `https://servicodados.ibge.gov.br/api/v1/localidades/estados/${stateObj.id}/municipios`,
+            );
+            const data = await res.json();
+            const names = data
+                .map((c: any) => c.nome)
+                .sort((a: string, b: string) => a.localeCompare(b));
+            setCities(names);
+        } catch (err) {
+            console.error('Erro ao buscar cidades:', err);
+            setCities([]);
+        } finally {
+            setLoadingCities(false);
+        }
+    };
 
     function validateStep1() {
         const nextErrors: Record<string, string> = {};
@@ -265,30 +318,46 @@ export default function PetRegistrationPage() {
 
                         <div className="grid grid-cols-3 gap-4">
                             <div>
+                                <label className="block text-base font-bold mb-1">Estado *</label>
+                                <select
+                                    value={form.uf}
+                                    onChange={(e) => handleStateChange(e.target.value)}
+                                    className="w-full border-1 font-semibold border-[#cbcbcb] rounded-lg px-3 py-2"
+                                >
+                                    <option value="">
+                                        {loadingStates ? 'Carregando estados...' : 'Selecione o estado'}
+                                    </option>
+                                    {states.map((state) => (
+                                        <option key={state.id} value={state.sigla}>
+                                            {state.nome} ({state.sigla})
+                                        </option>
+                                    ))}
+                                </select>
+                                {errors.state && <p className="text-red-600 text-sm mt-1">{errors.state}</p>}
+                            </div>
+
+                            <div>
                                 <label className="block text-base font-bold mb-1">Cidade do Dono *</label>
                                 <select
                                     value={form.city}
                                     onChange={(e) => update('city', e.target.value)}
                                     className="w-full border-1 font-semibold border-[#cbcbcb] rounded-lg px-3 py-2"
+                                    disabled={!form.uf || loadingCities}
                                 >
-                                    <option value="">Selecione a cidade</option>
-                                    <option value="balsas">Balsas, Maranhão</option>
-                                    <option value="mangabeiras">S. R. Mangabeiras, Maranhão</option>
+                                    <option value="">
+                                        {loadingCities
+                                            ? 'Carregando cidades...'
+                                            : !form.uf
+                                                ? 'Selecione um estado primeiro'
+                                                : 'Selecione a cidade'}
+                                    </option>
+                                    {cities.map((city) => (
+                                        <option key={city} value={city}>
+                                            {city}
+                                        </option>
+                                    ))}
                                 </select>
                                 {errors.city && <p className="text-red-600 text-sm mt-1">{errors.city}</p>}
-                            </div>
-
-                            <div>
-                                <label className="block text-base font-bold mb-1">Estado *</label>
-                                <select
-                                    value={form.state}
-                                    onChange={(e) => update('state', e.target.value)}
-                                    className="w-full border-1 font-semibold border-[#cbcbcb] rounded-lg px-3 py-2"
-                                >
-                                    <option value="">Selecione o estado</option>
-                                    <option value="Maranhão">Maranhão</option>
-                                </select>
-                                {errors.state && <p className="text-red-600 text-sm mt-1">{errors.state}</p>}
                             </div>
 
                             <div>
@@ -298,8 +367,8 @@ export default function PetRegistrationPage() {
                                     placeholder="MA"
                                     maxLength={2}
                                     value={form.uf}
-                                    onChange={(e) => update('uf', e.target.value.toUpperCase())}
-                                    className="w-full border-1 font-semibold border-[#cbcbcb] rounded-lg px-3 py-2"
+                                    readOnly
+                                    className="w-full border-1 font-semibold border-[#cbcbcb] rounded-lg px-3 py-2 bg-gray-100 cursor-not-allowed"
                                 />
                                 {errors.uf && <p className="text-red-600 text-sm mt-1">{errors.uf}</p>}
                             </div>
