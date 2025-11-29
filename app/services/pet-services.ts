@@ -85,16 +85,17 @@ export async function registerPet(token: string, payload: IPet): Promise<any> {
   }
 }
 
-export async function updatePet(uuid: string, payload: IPet) {
+export async function updatePet(uuid: string, payload: Partial<IPet>) {
   try {
     const response: any = await apiFetch(
       'PUT',
       `/pets/${uuid}`,
       payload,
     );
-    return response.data;
+    return response;
   } catch (error) {
-    handleApiError(error, 'Falha ao registrar usuário.');
+    handleApiError(error, 'Falha ao atualizar pet.');
+    throw error;
   }
 }
 
@@ -103,6 +104,69 @@ export const getMyPets = async () => {
     const response: any = await apiFetch('GET', '/pets/my-pets');
     return response.data;
   } catch (error) {
-    handleApiError(error, 'Falha ao registrar usuário.');
+    handleApiError(error, 'Falha ao buscar pets.');
+    throw error;
   }
 };
+
+export async function deletePet(externalId: string): Promise<IApiResponse<any>> {
+  try {
+    const response = await apiFetch('DELETE', `/pets/${externalId}`) as IApiResponse<any>;
+    return response;
+  } catch (error) {
+    handleApiError(error, 'Falha ao deletar pet.');
+    throw error;
+  }
+}
+
+export async function deleteImageFromPet(
+  petExternalId: string,
+  fileExternalId: string
+): Promise<IApiResponse<any>> {
+  try {
+    const response = await apiFetch(
+      'DELETE',
+      `/pets/${petExternalId}/files/${fileExternalId}`
+    ) as IApiResponse<any>;
+    return response;
+  } catch (error) {
+    handleApiError(error, 'Falha ao deletar imagem do pet.');
+    throw error;
+  }
+}
+
+export async function uploadImageToPet(
+  petExternalId: string,
+  file: File,
+  token: string
+): Promise<IApiResponse<any>> {
+  try {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const fallbackEnv = import.meta.env.VITE_API_URL as string;
+
+    const response = await fetch(`${fallbackEnv}/auth/pets/${petExternalId}/files`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: formData,
+    });
+
+    if (!response.ok) {
+      const errorData = await response
+        .json()
+        .catch(() => ({ message: 'Erro desconhecido' }));
+      throw new Error(
+        errorData.message || `Erro ao fazer upload da imagem: ${response.statusText}`,
+      );
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    handleApiError(error, 'Falha ao fazer upload da imagem.');
+    throw error;
+  }
+}
