@@ -170,3 +170,18 @@ export async function uploadImageToPet(
     throw error;
   }
 }
+
+export async function setImageAsMain(
+  petExternalId: string,
+  fileExternalId: string
+): Promise<void> {
+  try {
+    await apiFetch(
+      'PATCH',
+      `/pets/${petExternalId}/files/${fileExternalId}/set-as-main`
+    );
+  } catch (error) {
+    handleApiError(error, 'Falha ao definir imagem como principal.');
+    throw error;
+  }
+}
