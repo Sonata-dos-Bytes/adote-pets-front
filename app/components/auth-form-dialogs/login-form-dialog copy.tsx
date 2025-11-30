@@ -60,7 +60,7 @@ export default function AdotePetSignin({
     setIsOpen(false);
     reset();
   };
-  
+
   return (
     <Dialog isOpen={isOpen} onClose={handleClose} maxWidth='4xl'>
       <DialogContent side='left'>
@@ -113,11 +113,7 @@ export default function AdotePetSignin({
             </p>
           )}
 
-          <Button
-            type='submit'
-            disabled={isPending}
-            className='w-full text-white font-semibold py-3 rounded-xl transition-colors shadow-lg hover:shadow-xl mt-5'
-          >
+          <Button type='submit' disabled={isPending}>
             Entrar
           </Button>
         </form>
