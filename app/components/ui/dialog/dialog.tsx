@@ -6,6 +6,7 @@ interface DialogProps {
   onClose: () => void;
   children: ReactNode;
   maxWidth?: 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl';
+  fullWidth?: boolean;
 }
 
 export function Dialog({
@@ -13,6 +14,7 @@ export function Dialog({
   onClose,
   children,
   maxWidth = '4xl',
+  fullWidth = false,
 }: DialogProps) {
   if (!isOpen) return null;
 
@@ -29,7 +31,7 @@ export function Dialog({
   return (
     <div className='fixed inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm z-[9999] p-4'>
       <div
-        className={`bg-white rounded-3xl shadow-2xl overflow-hidden ${maxWidthClasses[maxWidth]} w-full flex flex-col md:flex-row relative`}
+        className={`bg-white rounded-3xl shadow-2xl overflow-hidden ${maxWidthClasses[maxWidth]} w-full ${fullWidth ? '' : 'flex flex-col md:flex-row'} relative`}
       >
         <X
           className='absolute top-6 right-6 w-8 h-8 text-gray-800 cursor-pointer z-10 hover:text-gray-600 transition-colors'
@@ -45,18 +47,21 @@ interface DialogContentProps {
   children: ReactNode;
   className?: string;
   side?: 'left' | 'right';
+  fullWidth?: boolean;
 }
 
 export function DialogContent({
   children,
   className = '',
   side,
+  fullWidth = false,
 }: DialogContentProps) {
   const sideOrder = side === 'left' ? 'order-first' : 'order-last';
+  const widthClass = fullWidth ? 'w-full' : side ? 'w-full md:w-1/2' : 'w-full';
 
   return (
     <div
-      className={`flex flex-col gap-5 md:w-1/2 p-8 md:p-12 ${sideOrder} ${className}`}
+      className={`flex flex-col gap-5 ${widthClass} p-8 md:p-12 ${sideOrder} ${className}`}
     >
       {children}
     </div>
