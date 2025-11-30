@@ -1,4 +1,3 @@
-import { ChevronDown } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import Button from '../ui/button/button';
 import Field from '../ui/field/field';
@@ -41,22 +40,26 @@ const AdoptionFilters = ({ setFilteredQuery }: { setFilteredQuery: React.Dispatc
   const [loadingCities, setLoadingCities] = useState(false);
 
   const animais = [
+    { value: '', label: 'Indiferente' },
     { value: 'dog', label: 'Cachorro' },
     { value: 'cat', label: 'Gato' },
     { value: 'coelho', label: 'Coelho' },
     { value: 'passaro', label: 'Pássaro' },
   ];
-  const idades = [
-    { value: 'filhote', label: 'Filhote (0-1 ano)' },
-    { value: 'jovem', label: 'Jovem (1-3 anos)' },
-    { value: 'adulto', label: 'Adulto (3-7 anos)' },
-    { value: 'senior', label: 'Senior (7+ anos)' },
-  ];
+
   const genders = [
+    { value: '', label: 'Indiferente' },
     { value: 'male', label: 'Macho' },
     { value: 'female', label: 'Fêmea' },
   ];
-  const cidades = cities.map((c) => ({ value: c, label: c }));
+
+  const optionSelect = [
+    { value: '', label: 'Indiferente' },
+    { value: 'true', label: 'Sim' },
+    { value: 'false', label: 'Não' },
+  ];
+
+  const citiesSelect = cities.map((c) => ({ value: c, label: c }));
 
   const updateFilter = (key: keyof FiltersState, value: string) => {
     setFilters((prev) => ({ ...prev, [key]: value }));
@@ -244,11 +247,7 @@ const AdoptionFilters = ({ setFilteredQuery }: { setFilteredQuery: React.Dispatc
         <div className='mb-4'>
           <label className='block text-sm text-gray-600 mb-1'>Castrado</label>
           <Select
-            options={[
-              { value: '', label: 'Indiferente' },
-              { value: 'true', label: 'Sim' },
-              { value: 'false', label: 'Não' },
-            ]}
+            options={optionSelect}
             value={filters.isCastrated}
             onChange={(value: string) => updateFilter('isCastrated', value)}
             placeholder='Selecione'
@@ -284,7 +283,7 @@ const AdoptionFilters = ({ setFilteredQuery }: { setFilteredQuery: React.Dispatc
             <div>
               <Field label='Cidade'>
                 <Select
-                  options={cidades}
+                  options={citiesSelect}
                   value={filters.city}
                   onChange={(value: string) => updateFilter('city', value)}
                   placeholder={

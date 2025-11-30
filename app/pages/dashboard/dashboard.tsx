@@ -1,4 +1,5 @@
 import { MyRequestCard } from '@/components/my-request-card/my-request-card';
+import { PetDetailsModal } from '@/components/pet-details-modal/pet-details-modal';
 import { PetRequestCard } from '@/components/pet-request-card/pet-request-card';
 import Button from '@/components/ui/button/button';
 import { useAuth } from '@/contexts/auth-context';
@@ -10,6 +11,7 @@ import { getMyPets, updatePet } from '@/services/pet-services';
 import type { IAdoptionRequest } from '@/types/IAdoption';
 import type { IPet, IPetWithRequests } from '@/types/IPet';
 import { calculateAge, getPetImage } from '@/utils';
+import { Eye } from 'lucide-react';
 import React from 'react';
 import { toast } from 'react-toastify';
 
@@ -20,6 +22,8 @@ export default function DashboardPage() {
     IPetWithRequests[]
   >([]);
   const [isLoading, setIsLoading] = React.useState(true);
+  const [selectedPet, setSelectedPet] = React.useState<IPet | null>(null);
+  const [isModalOpen, setIsModalOpen] = React.useState(false);
 
   React.useEffect(() => {
     const fetchPetsAndRequests = async () => {
@@ -55,6 +59,33 @@ export default function DashboardPage() {
     fetchPetsAndRequests();
   }, []);
 
+  const refetchPetsAndRequests = async () => {
+    try {
+      const { pets } = await getMyPets();
+      const { adoptions } = await getMyRequests();
+
+      const petsWithRequestsData = await Promise.all(
+        pets.map(async (pet: IPet) => {
+          try {
+            const { requests } = await getPetRequests(pet.externalId);
+            return { pet, requests: requests || [] };
+          } catch (error) {
+            console.error(
+              `Erro ao buscar requisições do pet ${pet.externalId}:`,
+              error,
+            );
+            return { pet, requests: [] };
+          }
+        }),
+      );
+
+      setPetsWithRequests(petsWithRequestsData);
+      setMyRequests(adoptions);
+    } catch (error) {
+      console.error('Erro ao buscar pets:', error);
+    }
+  };
+
   if (!user) {
     return null;
   }
@@ -67,19 +98,39 @@ export default function DashboardPage() {
   const handleHasAdopted = async (pet: IPet) => {
     try {
       const response = await updatePet(pet.externalId, {
-        ...pet,
         isAdote: true,
       });
 
-      if (response.data) {
-        toast.error('Erro ao atualizar o status do pet.');
-        return;
-      }
-
       toast.success('Status do pet atualizado com sucesso!');
+      await refetchPetsAndRequests();
     } catch (error) {
       console.error('Erro ao atualizar pet:', error);
+      toast.error('Erro ao atualizar o status do pet.');
     }
+  };
+
+  const handleViewPet = (pet: IPet) => {
+    setSelectedPet(pet);
+    setIsModalOpen(true);
+  };
+
+  const handlePetUpdated = async () => {
+    await refetchPetsAndRequests();
+    if (selectedPet) {
+      const { pets } = await getMyPets();
+      const updatedPet = pets.find(
+        (p: IPet) => p.externalId === selectedPet.externalId
+      );
+      if (updatedPet) {
+        setSelectedPet(updatedPet);
+      }
+    }
+  };
+
+  const handlePetDeleted = async () => {
+    await refetchPetsAndRequests();
+    setIsModalOpen(false);
+    setSelectedPet(null);
   };
 
   return (
@@ -200,19 +251,26 @@ export default function DashboardPage() {
                         </p>
                       </div>
                     </div>
-                    {!petWithRequests.pet.isAdote ? (
-                      <div>
+                    <div className='flex gap-2 items-center'>
+                      <button
+                        onClick={() => handleViewPet(petWithRequests.pet)}
+                        className='flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white border rounded-lg px-4 py-3 font-semibold text-sm transition-colors duration-200'
+                      >
+                        <Eye size={18} />
+                        Visualizar
+                      </button>
+                      {!petWithRequests.pet.isAdote ? (
                         <Button
                           onClick={() => handleHasAdopted(petWithRequests.pet)}
                         >
                           Adoção Finalizada
                         </Button>
-                      </div>
-                    ) : (
-                      <div className='bg-green-100 text-green-800 px-4 rounded-lg font-semibold flex items-center justify-center'>
-                        ✓ Pet Adotado
-                      </div>
-                    )}
+                      ) : (
+                        <div className='bg-green-100 text-green-800 px-4 py-2 rounded-lg font-semibold flex items-center justify-center'>
+                          ✓ Pet Adotado
+                        </div>
+                      )}
+                    </div>
                   </div>
                   <div className='p-6'>
                     <div className='flex items-center justify-between mb-4'>
@@ -240,6 +298,16 @@ export default function DashboardPage() {
             )}
           </div>
         </div>
+
+        {selectedPet && (
+          <PetDetailsModal
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+            pet={selectedPet}
+            onPetUpdated={handlePetUpdated}
+            onPetDeleted={handlePetDeleted}
+          />
+        )}
       </div>
     </div>
   );

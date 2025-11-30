@@ -1,9 +1,10 @@
-import CardWithButton from '@/components/card-with-button/card-with-button';
+import CreateAdoptionRequestSection from '@/components/create-adoption-request-section/create-adoption-request-section';
 import Gallery from '@/components/gallery/gallery';
 import HistoryCard from '@/components/history-card/history-card';
 import LocationInfo from '@/components/location-info/location-info';
 import PetAttributeCard from '@/components/pet-attribute-card/pet-attribute-card';
 import PetInfo from '@/components/pet-info/pet-info';
+import { useAuth } from '@/contexts/auth-context';
 import { getPetByUuid } from '@/services/pet-services';
 
 import type { IApiResponse } from '@/types/IApiResponse';
@@ -18,6 +19,7 @@ export default function AdoptionSpecificPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [pet, setPet] = useState<IPet | null>(null);
+  const { user } = useAuth();
 
   useEffect(() => {
     async function load() {
@@ -60,6 +62,8 @@ export default function AdoptionSpecificPage() {
   const ageLabel = calculateAge(pet.birthDay);
   const genderLabel = formatGender(pet.gender);
 
+  console.log(pet);
+
   return (
     <main className='max-w-full md:max-w-[1350px] mx-auto main-content p-4 md:p-0 my-6'>
       <h1 className='text-2xl font-bold'>Olá, humano!</h1>
@@ -74,7 +78,10 @@ export default function AdoptionSpecificPage() {
 
         <div className='w-full md:w-1/3 flex flex-col items-center gap-6 p-0 md:p-4'>
           <HistoryCard title={`História de ${pet.name}`} story={pet.lore} />
-          <CardWithButton />
+
+          {user.externalId !== pet.owner.externalId && (
+            <CreateAdoptionRequestSection pet={pet} />
+          )}
 
           <div className='flex w-full justify-between items-center mt-6 mb-10'>
             <PetAttributeCard
