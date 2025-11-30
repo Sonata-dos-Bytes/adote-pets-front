@@ -73,13 +73,56 @@ export function AdoptionListPage() {
                 </p>
               </div>
             ) : (
-              <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'>
-                {pets.map((pet) => (
-                  <div key={pet.externalId} className='flex'>
-                    <PetProfileCard petData={pet} />
+              <>
+                <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'>
+                  {pets.map((pet) => (
+                    <div key={pet.externalId} className='flex'>
+                      <PetProfileCard petData={pet} />
+                    </div>
+                  ))}
+                </div>
+
+                {meta.lastPage && meta.lastPage > 1 && (
+                  <div className='flex flex-col items-center gap-4 mt-8'>
+                    <div className='flex items-center gap-2 flex-wrap justify-center'>
+                      <button
+                        onClick={() => setQuery((prev) => ({ ...prev, page: Math.max(1, (prev.page || 1) - 1) }))}
+                        disabled={query.page === 1}
+                        className='px-2 py-2 rounded-lg bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed font-medium transition-colors'
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m13 15l-3-3l3-3"/></svg>
+                      </button>
+
+                      {Array.from({ length: meta.lastPage }, (_, i) => i + 1).map((page) => (
+                        <button
+                          key={page}
+                          onClick={() => setQuery((prev) => ({ ...prev, page }))}
+                          className={`px-4 py-2 rounded-lg font-bold transition-colors ${query.page === page
+                              ? 'bg-primary text-white border-2 border-primary'
+                              : 'bg-white border border-gray-300 text-primary hover:bg-gray-50'
+                            }`}
+                        >
+                          {page}
+                        </button>
+                      ))}
+
+                      <button
+                        onClick={() => setQuery((prev) => ({ ...prev, page: Math.min(meta.lastPage!, (prev.page || 1) + 1) }))}
+                        disabled={query.page === meta.lastPage}
+                        className='px-2 py-2 rounded-lg bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed font-medium transition-colors'
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m11 9l3 3l-3 3"/></svg>
+                      </button>
+                    </div>
+
+                    {meta.total !== undefined && (
+                      <p className='text-sm text-gray-600'>
+                        Mostrando {(query.page! - 1) * query.perPage! + 1} - {Math.min(query.page! * query.perPage!, meta.total)} de {meta.total} pets
+                      </p>
+                    )}
                   </div>
-                ))}
-              </div>
+                )}
+              </>
             )}
           </div>
         </div>
