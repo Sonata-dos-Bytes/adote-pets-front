@@ -71,7 +71,7 @@ export const updateUserProfile = async (
     
     const response = await apiFetch(
       'PUT',
-      '/auth/update-profile',
+      '/update-profile',
       formData 
     );
 
