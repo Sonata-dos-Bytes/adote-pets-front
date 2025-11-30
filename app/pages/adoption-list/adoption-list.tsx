@@ -48,7 +48,7 @@ export function AdoptionListPage() {
           Animais Disponíveis para Adoção
         </h1>
         <div className='flex flex-col lg:flex-row gap-8 w-full'>
-            <div className='w-full lg:w-2/5 mb-8 lg:mb-0'>
+          <div className='w-full lg:w-2/5 mb-8 lg:mb-0'>
             <PetFilters
               setFilteredQuery={setQuery}
             />
@@ -58,13 +58,29 @@ export function AdoptionListPage() {
             {loading && <div>Carregando pets...</div>}
             {error && <div className='text-red-600'>Erro: {error}</div>}
 
-            <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'>
-              {pets.map((pet) => (
-                <div key={pet.externalId} className='flex'>
-                  <PetProfileCard petData={pet} />
-                </div>
-              ))}
-            </div>
+            {!loading && !error && pets.length === 0 ? (
+              <div className='flex flex-col items-center justify-center py-12 px-4'>
+                <img
+                  src='/assets/images/sad.jpg'
+                  alt='Nenhum pet disponível'
+                  className='w-64 h-64 object-contain mb-6'
+                />
+                <h2 className='text-2xl font-bold text-gray-700 mb-2'>
+                  Nenhum pet disponível no momento
+                </h2>
+                <p className='text-gray-500 text-center max-w-md'>
+                  Ainda não há animais cadastrados para adoção. Volte em breve para conhecer nossos pets que estão procurando um lar cheio de amor!
+                </p>
+              </div>
+            ) : (
+              <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'>
+                {pets.map((pet) => (
+                  <div key={pet.externalId} className='flex'>
+                    <PetProfileCard petData={pet} />
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </div>
