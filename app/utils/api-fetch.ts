@@ -46,7 +46,7 @@ export async function getAuthToken(): Promise<string | undefined> {
 }
 
 export async function apiFetch(
-  method: 'GET' | 'POST' | 'PUT' | 'DELETE',
+  method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH',
   url: string,
   body: unknown = null,
   params: Record<string, string> = {},
