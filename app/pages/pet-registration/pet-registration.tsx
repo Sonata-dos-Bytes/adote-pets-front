@@ -3,6 +3,7 @@ import Button from '../../components/ui/button/button';
 import { useNavigate } from 'react-router';
 import { registerPet } from '../../services/pet-services';
 import { useAuth } from '../../contexts/auth-context';
+import { Star, Trash2 } from 'lucide-react';
 
 export default function PetRegistrationPage() {
     const [step, setStep] = useState<number>(1);
@@ -30,6 +31,8 @@ export default function PetRegistrationPage() {
     const [images, setImages] = useState(
         Array.from({ length: 4 }).map(() => ({ file: null as File | null, preview: '' as string | null, error: '' }))
     );
+
+    const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
 
     const [states, setStates] = useState<
         Array<{ id: number; nome: string; sigla: string }>
@@ -112,6 +115,24 @@ export default function PetRegistrationPage() {
         imgEl.src = url;
     }
 
+    function moveImage(fromIndex: number, toIndex: number) {
+        setImages((prev) => {
+            const next = [...prev];
+            const [movedItem] = next.splice(fromIndex, 1);
+            next.splice(toIndex, 0, movedItem);
+            return next;
+        });
+    }
+
+    function removeImage(index: number) {
+        setImages((prev) => {
+            const next = [...prev];
+            if (next[index].preview) URL.revokeObjectURL(next[index].preview as string);
+            next[index] = { file: null, preview: null, error: '' };
+            return next;
+        });
+    }
+
     function update<K extends keyof typeof form>(key: K, value: typeof form[K]) {
         setForm((s) => ({ ...s, [key]: value }));
         setErrors((e) => ({ ...e, [key]: '' }));
@@ -125,7 +146,7 @@ export default function PetRegistrationPage() {
 
         update('state', stateObj.nome);
         update('uf', stateObj.sigla);
-        update('city', ''); 
+        update('city', '');
 
         try {
             setLoadingCities(true);
@@ -415,30 +436,67 @@ export default function PetRegistrationPage() {
                     <div className="space-y-4">
                         <h3 className="text-4xl font-extrabold mb-12 text-left">Imagens</h3>
                         <p className="text-base font-bold text-black">O formato da imagem deve (.jpg, .png, .jpeg).</p>
+                        <p className="text-sm font-semibold text-gray-600 mb-4">
+                            <Star size={16} className="inline text-yellow-500 fill-yellow-500 mr-1" />
+                            A primeira imagem será a imagem principal. Arraste para reordenar.
+                        </p>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             {images.map((img, idx) => (
-                                <label key={idx} className="flex items-center justify-center border-2 border-dashed rounded-2xl bg-gray-50 cursor-pointer overflow-hidden" style={{ minHeight: 296 }}>
-                                    <input
-                                        type="file"
-                                        accept="image/png, image/jpeg, image/jpg"
-                                        className="hidden"
-                                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleImageChange(idx, e.target.files ? e.target.files[0] : null)}
-                                    />
-                                    <div className="w-full h-full flex flex-col items-center justify-center gap-2">
-                                        {img.preview ? (
-                                            <img src={img.preview as string} alt={`preview-${idx}`} className="object-cover w-full h-full" />
-                                        ) : (
+                                <div
+                                    key={idx}
+                                    draggable={!!img.preview}
+                                    onDragStart={() => setDraggedIndex(idx)}
+                                    onDragOver={(e) => {
+                                        e.preventDefault();
+                                        if (draggedIndex !== null && draggedIndex !== idx && img.preview) {
+                                            moveImage(draggedIndex, idx);
+                                            setDraggedIndex(idx);
+                                        }
+                                    }}
+                                    onDragEnd={() => setDraggedIndex(null)}
+                                    className={`relative flex items-center justify-center border-2 border-dashed rounded-2xl bg-gray-50 overflow-hidden ${img.preview ? 'cursor-move' : 'cursor-pointer'
+                                        } ${draggedIndex === idx ? 'opacity-50' : ''}`}
+                                    style={{ minHeight: 296 }}
+                                >
+                                    {!img.preview && (
+                                        <label className="w-full h-full flex items-center justify-center cursor-pointer">
+                                            <input
+                                                type="file"
+                                                accept="image/png, image/jpeg, image/jpg"
+                                                className="hidden"
+                                                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                                                    handleImageChange(idx, e.target.files ? e.target.files[0] : null)
+                                                }
+                                            />
                                             <div className="flex flex-col items-center justify-center text-gray-400">
                                                 <svg width="62" height="56" viewBox="0 0 62 56" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                     <path d="M56 13.3333H47.5467L42.6667 8H26.6667V13.3333H40.32L45.2 18.6667H56V50.6667H13.3333V26.6667H8V50.6667C8 53.6 10.4 56 13.3333 56H56C58.9333 56 61.3333 53.6 61.3333 50.6667V18.6667C61.3333 15.7333 58.9333 13.3333 56 13.3333ZM21.3333 34.6667C21.3333 42.0267 27.3067 48 34.6667 48C42.0267 48 48 42.0267 48 34.6667C48 27.3067 42.0267 21.3333 34.6667 21.3333C27.3067 21.3333 21.3333 27.3067 21.3333 34.6667ZM34.6667 26.6667C39.0667 26.6667 42.6667 30.2667 42.6667 34.6667C42.6667 39.0667 39.0667 42.6667 34.6667 42.6667C30.2667 42.6667 26.6667 39.0667 26.6667 34.6667C26.6667 30.2667 30.2667 26.6667 34.6667 26.6667ZM13.3333 13.3333H21.3333V8H13.3333V0H8V8H0V13.3333H8V21.3333H13.3333V13.3333Z" fill="#868686" />
                                                 </svg>
                                             </div>
-                                        )}
+                                        </label>
+                                    )}
 
-                                        {img.error && <p className="text-red-600 text-sm mt-2">{img.error}</p>}
-                                    </div>
-                                </label>
+                                    {img.preview && (
+                                        <>
+                                            <img src={img.preview as string} alt={`preview-${idx}`} className="object-cover w-full h-full" />
+                                            {idx === 0 && (
+                                                <div className="absolute top-2 left-2 bg-yellow-500 text-white p-1.5 rounded-full shadow-lg">
+                                                    <Star size={16} fill="currentColor" />
+                                                </div>
+                                            )}
+                                            <button
+                                                type="button"
+                                                onClick={() => removeImage(idx)}
+                                                className="absolute top-2 right-2 bg-red-500 text-white p-2 rounded-full hover:bg-red-600 transition-colors"
+                                            >
+                                                <Trash2 size={16} />
+                                            </button>
+                                        </>
+                                    )}
+
+                                    {img.error && <p className="text-red-600 text-sm mt-2 absolute bottom-2">{img.error}</p>}
+                                </div>
                             ))}
                         </div>
                     </div>

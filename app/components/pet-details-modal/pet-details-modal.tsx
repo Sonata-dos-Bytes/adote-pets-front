@@ -4,10 +4,11 @@ import {
     deleteImageFromPet,
     uploadImageToPet,
     updatePet,
+    setImageAsMain,
 } from '@/services/pet-services';
 import type { IPet } from '@/types/IPet';
 import { calculateAge, getPetImage } from '@/utils';
-import { Edit, Trash2, Upload, X } from 'lucide-react';
+import { Edit, Star, Trash2, Upload, X } from 'lucide-react';
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 import { useAuth } from '@/contexts/auth-context';
@@ -127,7 +128,7 @@ export function PetDetailsModal({
             ...prev,
             state: stateObj.nome,
             uf: stateObj.sigla,
-            city: '', 
+            city: '',
         }));
 
         try {
@@ -242,6 +243,17 @@ export function PetDetailsModal({
         }
     };
 
+    const handleSetAsMain = async (fileExternalId: string) => {
+        try {
+            await setImageAsMain(pet.externalId, fileExternalId);
+            toast.success('Imagem definida como principal!');
+            onPetUpdated();
+        } catch (error) {
+            console.error('Erro ao definir imagem principal:', error);
+            toast.error('Erro ao definir imagem como principal.');
+        }
+    };
+
     if (!isOpen) return null;
 
     return (
@@ -301,20 +313,36 @@ export function PetDetailsModal({
                     <div className='mb-8'>
                         <h3 className='text-lg font-semibold text-secondary mb-4'>Fotos</h3>
                         <div className='grid grid-cols-2 md:grid-cols-4 gap-4'>
-                            {localImages.map((file) => (
+                            {localImages.map((file, index) => (
                                 <div key={file.externalId} className='relative group'>
                                     <img
                                         src={file.path}
                                         alt={`${pet.name}`}
                                         className='w-full h-32 object-cover rounded-lg'
                                     />
+                                    {index === 0 && (
+                                        <div className='absolute top-2 left-2 bg-yellow-500 text-white p-1.5 rounded-full shadow-lg'>
+                                            <Star size={16} fill='currentColor' />
+                                        </div>
+                                    )}
                                     {isEditMode && (
-                                        <button
-                                            onClick={() => handleDeleteImage(file.externalId)}
-                                            className='absolute top-2 right-2 bg-red-500 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600'
-                                        >
-                                            <Trash2 size={16} />
-                                        </button>
+                                        <>
+                                            <button
+                                                onClick={() => handleDeleteImage(file.externalId)}
+                                                className='absolute top-2 right-2 bg-red-500 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600'
+                                            >
+                                                <Trash2 size={16} />
+                                            </button>
+                                            {index !== 0 && (
+                                                <button
+                                                    onClick={() => handleSetAsMain(file.externalId)}
+                                                    title='Definir como imagem principal'
+                                                    className='absolute bottom-2 left-2 bg-yellow-500 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-yellow-600'
+                                                >
+                                                    <Star size={16} />
+                                                </button>
+                                            )}
+                                        </>
                                     )}
                                 </div>
                             ))}
