@@ -255,7 +255,7 @@ export default function PetRegistrationPage() {
 
                 {step === 1 && (
                     <form className="space-y-4" onSubmit={(e) => { e.preventDefault(); onContinueFromStep1(); }}>
-                        <h2 className="text-4xl font-extrabold mb-12 text-left">Informações Básicas</h2>
+                        <h2 className="text-4xl font-extrabold mb-12 text-left text-secondary">Informações Básicas</h2>
                         <div className="flex gap-4">
                             <div className="flex-1">
                                 <label className="block text-base font-bold mb-1">Nome do Pet *</label>
@@ -271,7 +271,7 @@ export default function PetRegistrationPage() {
                             </div>
 
                             <div className="flex-1">
-                                <label className="block text-base font-bold mb-1">Espécie *</label>
+                                <label className="block text-base font-bold mb-1 text-secondary">Espécie *</label>
                                 <input
                                     type="text"
                                     placeholder="Cachorro..."
@@ -283,7 +283,7 @@ export default function PetRegistrationPage() {
                             </div>
 
                             <div className="w-40">
-                                <label className="block text-base font-bold mb-1">Idade (Anos) *</label>
+                                <label className="block text-base font-bold mb-1 text-secondary">Idade (Anos) *</label>
                                 <input
                                     type="number"
                                     min={0}
@@ -298,7 +298,7 @@ export default function PetRegistrationPage() {
                         </div>
 
                         <div>
-                            <label className="block text-base font-bold mb-1">Raça *</label>
+                            <label className="block text-base font-bold mb-1 text-secondary">Raça *</label>
                             <input
                                 type="text"
                                 placeholder="Labrador..."
@@ -311,7 +311,7 @@ export default function PetRegistrationPage() {
 
                         <div className="grid grid-cols-2 gap-4">
                             <div>
-                                <label className="block text-base font-bold mb-1">Gênero *</label>
+                                <label className="block text-base font-bold mb-1 text-secondary">Gênero *</label>
                                 <select
                                     value={form.gender}
                                     onChange={(e) => update('gender', e.target.value)}
@@ -325,7 +325,7 @@ export default function PetRegistrationPage() {
                             </div>
 
                             <div>
-                                <label className="block text-base font-bold mb-1">Cor *</label>
+                                <label className="block text-base font-bold mb-1 text-secondary">Cor *</label>
                                 <input
                                     type="text"
                                     placeholder="Preto, caramelo..."
@@ -339,7 +339,7 @@ export default function PetRegistrationPage() {
 
                         <div className="grid grid-cols-3 gap-4">
                             <div>
-                                <label className="block text-base font-bold mb-1">Estado *</label>
+                                <label className="block text-base font-bold mb-1 text-secondary">Estado *</label>
                                 <select
                                     value={form.uf}
                                     onChange={(e) => handleStateChange(e.target.value)}
@@ -358,7 +358,7 @@ export default function PetRegistrationPage() {
                             </div>
 
                             <div>
-                                <label className="block text-base font-bold mb-1">Cidade do Dono *</label>
+                                <label className="block text-base font-bold mb-1 text-secondary">Cidade do Dono *</label>
                                 <select
                                     value={form.city}
                                     onChange={(e) => update('city', e.target.value)}
@@ -382,7 +382,7 @@ export default function PetRegistrationPage() {
                             </div>
 
                             <div>
-                                <label className="block text-base font-bold mb-1">UF (Sigla) *</label>
+                                <label className="block text-base font-bold mb-1 text-secondary">UF (Sigla) *</label>
                                 <input
                                     type="text"
                                     placeholder="MA"
@@ -396,7 +396,7 @@ export default function PetRegistrationPage() {
                         </div>
 
                         <div className="flex gap-6 mt-12 items-center">
-                            <p className="block text-base font-bold">Seu animal de estimação é castrado ou esterilizado? *</p>
+                            <p className="block text-base font-bold text-secondary">Seu animal de estimação é castrado ou esterilizado? *</p>
                             <div className="flex items-center gap-6">
                                 <label className="inline-flex items-center font-bold text-[#606060]">
                                     <input
@@ -504,9 +504,9 @@ export default function PetRegistrationPage() {
 
                 {step === 3 && (
                     <div className="space-y-4">
-                        <h3 className="text-4xl font-extrabold mb-12 text-left">História</h3>
-                        <p className="text-base text-black font-bold">Compartilhe aqui qualquer coisa sobre seu animal de estimação. (O perfil do seu animal de estimação ficará visível ao público. Para sua segurança, não inclua dados pessoais ou informações de contato.) Inclua informações como:</p>
-                        <ul className="list-disc list-inside text-base font-bold text-black space-y-1">
+                        <h3 className="text-4xl font-extrabold mb-12 text-left text-secondary">História</h3>
+                        <p className="text-base text-secondary font-bold">Compartilhe aqui qualquer coisa sobre seu animal de estimação. (O perfil do seu animal de estimação ficará visível ao público. Para sua segurança, não inclua dados pessoais ou informações de contato.) Inclua informações como:</p>
+                        <ul className="list-disc list-inside text-base font-bold text-secondary space-y-1">
                             <li>Histórico do seu animal de estimação: há quanto tempo você o tem, de onde o adquiriu e por que precisa de um novo lar para ele.</li>
                             <li>Detalhes sobre com quem seu animal de estimação conviveu, por exemplo, crianças e outros animais de estimação.</li>
                             <li>Atividades favoritas do seu animal de estimação.</li>
