@@ -178,7 +178,6 @@ export default function AdotePetSignup({
           <Button
             type='submit'
             disabled={isPending}
-            className='w-full text-white font-semibold py-3 rounded-xl transition-colors shadow-lg hover:shadow-xl mt-5'
           >
             Cadastrar-se
           </Button>
