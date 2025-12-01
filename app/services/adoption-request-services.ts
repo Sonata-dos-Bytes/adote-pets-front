@@ -37,7 +37,7 @@ export const createAdoptionRequest = async (
       return { status: false, message: response.message };
     }
 
-    return response.data;
+    return { status: true, data: response.data };
   } catch (error) {
     handleApiError(error, 'Falha ao registrar usuário.');
   }

@@ -10,7 +10,7 @@ export const GuidesPage = () => {
     {
       title: "Como Adotar um Pet",
       icon: Search,
-      color: "from-orange-500 to-orange-600",
+      color: "bg-primary",
       bgColor: "bg-orange-50",
       iconBg: "bg-orange-100",
       iconColor: "text-orange-600",

@@ -9,6 +9,8 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import Button from '../ui/button/button';
 import { Dialog, DialogContent, DialogHeader } from '../ui/dialog/dialog';
+import type { IApiResponse } from '@/types/IApiResponse';
+import type { IAdoptionRequest } from '@/types/IAdoption';
 
 interface CreateAdoptionRequestSectionProps {
   pet: { externalId: string };
@@ -30,13 +32,12 @@ export default function CreateAdoptionRequestSection({
 
   const onSubmit = async (data: CreateAdoptionRequestFormData) => {
     try {
-      const response: { status: boolean; message: string } =
-        await createAdoptionRequest(pet.externalId, {
-          reason: data.motive,
-        });
+      const response = await createAdoptionRequest(pet.externalId, {
+        reason: data.motive,
+      });
 
-      if (!response.status) {
-        toast.error('Erro ao enviar solicitação: ' + response.message);
+      if (!response || !response.status) {
+        toast.error('Erro ao enviar solicitação: ' + (response?.message || 'Erro desconhecido'));
         return;
       }
 

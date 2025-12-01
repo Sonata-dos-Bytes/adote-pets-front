@@ -54,7 +54,7 @@ const PetProfileCard = ({ petData }: { petData: IPet }) => {
         </div>
 
         {/* Descrição */}
-        <p className='text-gray-600 text-sm leading-relaxed mb-6'>
+        <p className='text-gray-600 text-sm leading-relaxed mb-6 line-clamp-3'>
           {pet.lore}
         </p>
       </Card.Content>

@@ -90,8 +90,9 @@ export default function AdotePetSignin({
               <Lock width={18} height={18} />
             </span>
             <input
-              type={showPassword ? 'text' : 'password'}
+              type='password'
               placeholder='Senha'
+              autoComplete='off'
               className='w-full pl-12 pr-12 py-3 border-2 border-gray-200 rounded-xl focus:border-primary focus:outline-none transition-colors'
               {...register('password')}
             />

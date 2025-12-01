@@ -146,6 +146,7 @@ export default function AdotePetSignup({
             <input
               type='password'
               placeholder='Senha'
+              autoComplete='off'
               className='w-full pl-12 pr-12 py-3 border-2 border-gray-200 rounded-xl focus:border-orange-400 focus:outline-none transition-colors'
               {...register('password')}
             />
@@ -163,6 +164,7 @@ export default function AdotePetSignup({
             <input
               type='password'
               placeholder='Confirmar Senha'
+              autoComplete='off'
               className='w-full pl-12 pr-12 py-3 border-2 border-gray-200 rounded-xl focus:border-orange-400 focus:outline-none transition-colors'
               {...register('passwordConfirmation')}
             />
@@ -176,7 +178,6 @@ export default function AdotePetSignup({
           <Button
             type='submit'
             disabled={isPending}
-            className='w-full text-white font-semibold py-3 rounded-xl transition-colors shadow-lg hover:shadow-xl mt-5'
           >
             Cadastrar-se
           </Button>

@@ -8,7 +8,7 @@ import type { IApiResponse } from '@/types/IApiResponse';
 import { getPets } from '@/services/pet-services';
 
 export function AdoptionListPage() {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [pets, setPets] = useState<IPet[]>([]);
   const [meta, setMeta] = useState<IMeta>({});
@@ -55,8 +55,11 @@ export function AdoptionListPage() {
           </div>
 
           <div className='w-full'>
-            {loading && <div>Carregando pets...</div>}
-            {error && <div className='text-red-600'>Erro: {error}</div>}
+            {loading && (
+              <div className="flex justify-center items-center py-12">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+              </div>
+            )}
 
             {!loading && !error && pets.length === 0 ? (
               <div className='flex flex-col items-center justify-center py-12 px-4'>

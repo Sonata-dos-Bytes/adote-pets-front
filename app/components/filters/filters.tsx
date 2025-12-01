@@ -158,13 +158,12 @@ const AdoptionFilters = ({ setFilteredQuery }: { setFilteredQuery: React.Dispatc
           </h3>
         <div>
           <Field label='Tipo'>
-            <Select
-              options={animais}
+            <input
+              type='text'
+              className={'w-full border border-gray-300 rounded-lg px-4 py-3 bg-white appearance-none focus:ring-2 focus:ring-primary focus:border-primary font-sans text-sm'}
               value={filters.species}
-              onChange={(value: string) => updateFilter('species', value)}
-              placeholder='Selecione o tipo'
-              searchable
-              allowClear
+              onChange={(e) => updateFilter('species', e.target.value)}
+              placeholder='Digite o tipo'
             />
           </Field>
         </div>
