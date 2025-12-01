@@ -146,6 +146,7 @@ export default function AdotePetSignup({
             <input
               type='password'
               placeholder='Senha'
+              autoComplete='off'
               className='w-full pl-12 pr-12 py-3 border-2 border-gray-200 rounded-xl focus:border-orange-400 focus:outline-none transition-colors'
               {...register('password')}
             />
@@ -163,6 +164,7 @@ export default function AdotePetSignup({
             <input
               type='password'
               placeholder='Confirmar Senha'
+              autoComplete='off'
               className='w-full pl-12 pr-12 py-3 border-2 border-gray-200 rounded-xl focus:border-orange-400 focus:outline-none transition-colors'
               {...register('passwordConfirmation')}
             />
