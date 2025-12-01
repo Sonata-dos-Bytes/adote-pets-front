@@ -263,7 +263,7 @@ export default function DashboardPage() {
                         <Button
                           onClick={() => handleHasAdopted(petWithRequests.pet)}
                         >
-                          Adoção Finalizada
+                          Finalizar Adoção
                         </Button>
                       ) : (
                         <div className='bg-green-100 text-green-800 px-4 py-2 rounded-lg font-semibold flex items-center justify-center'>
